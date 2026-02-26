@@ -2,79 +2,122 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Babylon13 | VPN Setup Manual</title>
   <style>
     :root { 
-      --accent: #00d1b2; 
-      --bg: #0a0a0a; 
-      --card: #141414; 
-      --text: #e0e0e0; 
-      --border: #2a2a2a;
+      /* Спокійний глибокий синій акцент */
+      --accent: #3A7CA5; 
+      --accent-hover: #2d6285;
+      --bg: #0b0d10; 
+      --card: #12151a; 
+      --text: #d1d5db; 
+      --border: #1f2937;
+      --warning-bg: #271c19;
+      --warning-text: #fca5a5;
     }
+    
+    * { box-sizing: border-box; }
+    
     body { 
       background: var(--bg); color: var(--text); 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-      line-height: 1.6; padding: 20px; display: flex; justify-content: center; margin: 0;
+      line-height: 1.6; padding: 20px 15px; display: flex; justify-content: center; margin: 0;
     }
+    
     .container { 
       max-width: 600px; width: 100%; background: var(--card); 
-      padding: 40px; border-radius: 16px; border: 1px solid var(--border);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      padding: 35px 30px; border-radius: 12px; border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
+    
     .logo { 
-      color: var(--accent); font-weight: 900; font-size: 28px; 
-      letter-spacing: 2px; text-align: center; margin-bottom: 10px; text-transform: uppercase;
+      color: var(--accent); font-weight: 800; font-size: 24px; 
+      letter-spacing: 2px; text-align: center; margin-bottom: 5px; text-transform: uppercase;
     }
+    
     .subtitle {
-      text-align: center; color: #888; font-size: 14px; margin-bottom: 40px;
+      text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 30px;
     }
+
+    .info-block {
+      background: rgba(58, 124, 165, 0.1); border-left: 4px solid var(--accent);
+      padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 30px; font-size: 14px;
+    }
+
+    .warning-block {
+      background: var(--warning-bg); border-left: 4px solid var(--warning-text);
+      padding: 15px; border-radius: 0 8px 8px 0; margin-bottom: 30px; font-size: 14px; color: #f87171;
+    }
+
     .step { 
-      margin-bottom: 35px; padding-bottom: 25px; border-bottom: 1px solid var(--border);
+      margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid var(--border);
     }
     .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     
     .step-title { 
-      color: var(--accent); font-size: 18px; font-weight: bold; margin-bottom: 15px; 
+      color: var(--accent); font-size: 17px; font-weight: bold; margin-bottom: 12px; 
       display: flex; align-items: center;
     }
     .step-num {
-      background: var(--accent); color: #000; width: 24px; height: 24px; 
+      background: var(--accent); color: #fff; width: 24px; height: 24px; 
       display: inline-flex; justify-content: center; align-items: center; 
-      border-radius: 50%; margin-right: 10px; font-size: 14px;
+      border-radius: 4px; margin-right: 12px; font-size: 13px; font-weight: bold;
     }
     
     .ip-box { 
       background: #000; padding: 20px; border-radius: 8px; text-align: center; 
-      border: 1px dashed var(--accent); margin: 15px 0;
+      border: 1px solid var(--border); margin: 15px 0;
     }
-    #user-ip { font-family: "SF Mono", monospace; font-size: 28px; color: var(--accent); font-weight: bold;}
+    
+    #user-ip { 
+      font-family: "SF Mono", monospace; font-size: 26px; color: var(--accent); font-weight: bold; display: block; margin-bottom: 5px;
+    }
+    #user-location {
+      font-size: 13px; color: #6b7280;
+    }
     
     .btn { 
-      background: #222; color: #fff; border: 1px solid #444; padding: 12px 20px; 
+      background: #1f2937; color: #fff; border: 1px solid #374151; padding: 12px 20px; 
       border-radius: 6px; font-weight: 600; cursor: pointer; text-decoration: none; 
-      display: inline-block; text-align: center; transition: 0.2s; font-size: 14px;
+      display: block; text-align: center; transition: 0.2s; font-size: 14px; width: 100%;
     }
-    .btn:hover { background: #333; }
-    .btn-primary { background: var(--accent); color: #000; border: none; width: 100%; margin-top: 10px;}
-    .btn-primary:hover { background: #00b89c; }
-    .btn-wa { background: #25D366; color: #000; width: 100%; margin-top: 10px; border: none;}
-    .btn-wa:hover { background: #20b858; }
+    .btn:hover { background: #374151; }
+    
+    .btn-primary { 
+      background: var(--accent); color: #fff; border: none; margin-top: 10px;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
 
     .code-row { 
       background: #000; padding: 12px 15px; border-radius: 6px; margin-top: 10px; 
-      display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;
+      display: flex; justify-content: space-between; align-items: center; border: 1px solid #1f2937;
     }
-    code { color: var(--accent); font-family: monospace; font-size: 15px; }
-    .copy-mini { 
-      background: #333; color: #fff; border: none; padding: 5px 10px; 
-      border-radius: 4px; font-size: 12px; cursor: pointer;
-    }
-    .copy-mini:hover { background: #444; }
+    code { color: var(--accent); font-family: monospace; font-size: 14px; word-break: break-all; }
     
-    ul { padding-left: 20px; color: #ccc; font-size: 15px; }
-    li { margin-bottom: 8px; }
+    .copy-mini { 
+      background: #1f2937; color: #fff; border: none; padding: 6px 12px; 
+      border-radius: 4px; font-size: 12px; cursor: pointer; margin-left: 10px; flex-shrink: 0;
+    }
+    .copy-mini:hover { background: #374151; }
+    
+    .faq-section { background: #111827; padding: 20px; border-radius: 8px; margin-top: 30px; border: 1px solid #1f2937;}
+    .faq-title { color: #fff; font-weight: bold; margin-bottom: 15px; font-size: 16px; border-bottom: 1px solid #374151; padding-bottom: 10px;}
+    .faq-item { margin-bottom: 15px; }
+    .faq-q { color: #fca5a5; font-size: 14px; font-weight: bold; margin-bottom: 5px;}
+    .faq-a { color: #9ca3af; font-size: 13px;}
+    
+    ul { padding-left: 20px; margin-top: 10px; }
+    li { margin-bottom: 6px; }
     b { color: #fff; }
+
+    /* Адаптивність для телефонів */
+    @media (max-width: 480px) {
+      .container { padding: 25px 20px; }
+      #user-ip { font-size: 22px; }
+      .code-row { flex-direction: column; align-items: flex-start; }
+      .copy-mini { margin-left: 0; margin-top: 10px; width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -83,83 +126,107 @@
   <div class="logo">BABYLON13</div>
   <div class="subtitle">Інструкція з безпечного доступу до сервера</div>
 
-  <div class="step">
-    <div class="step-title"><span class="step-num">1</span> Встановіть клієнт WireGuard</div>
-    <p style="font-size: 15px; color: #ccc;">Це програма, яка створить захищений тунель між вашим комп'ютером та нашим сервером. Вона працює у фоні і не гальмує систему.</p>
-    <a href="https://www.wireguard.com/install/" target="_blank" class="btn">Завантажити WireGuard (Офіційний сайт)</a>
+  <div class="info-block">
+    <b>Навіщо це потрібно?</b> VPN створює захищений тунель між вашим пристроєм та офісом Babylon13. З увімкненим VPN ви працюєте так, ніби фізично знаходитесь у студії і підключені до нашого роутера.
   </div>
 
   <div class="step">
-    <div class="step-title"><span class="step-num">2</span> Авторизуйте свою мережу</div>
-    <p style="font-size: 15px; color: #ccc;">Наш сервер закритий для всього інтернету. Щоб система вас пропустила, відправте адміну свою поточну IP-адресу. Це потрібно робити, якщо ви змінили локацію (наприклад, переїхали з дому в кафе).</p>
+    <div class="step-title"><span class="step-num">1</span> Встановіть WireGuard</div>
+    <p style="font-size: 14px; color: #9ca3af;">Завантажте та встановіть офіційний клієнт. Програма доступна для будь-якої платформи: MacOS, Windows, iOS або Android.</p>
+    <a href="https://www.wireguard.com/install/" target="_blank" class="btn">Завантажити WireGuard</a>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">2</span> Отримайте конфіг-файл</div>
+    <p style="font-size: 14px; color: #9ca3af;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. Це захист від зламів. Скопіюйте свій IP нижче та <b>вишліть Іллі у WhatsApp</b>. У відповідь він надішле вам ваш персональний файл налаштувань (конфіг).</p>
     
     <div class="ip-box">
       <span id="user-ip">визначаємо...</span>
+      <span id="user-location">перевірка локації...</span>
     </div>
 
     <button class="btn btn-primary" onclick="copyIp()">СКОПІЮВАТИ IP</button>
-    <a id="wa-link" href="#" target="_blank" class="btn btn-wa">ВІДПРАВИТИ АДМІНУ (WHATSAPP)</a>
   </div>
 
   <div class="step">
-    <div class="step-title"><span class="step-num">3</span> Налаштуйте з'єднання</div>
-    <p style="font-size: 15px; color: #ccc;">Адмін перевірить ваш IP і надішле вам особистий файл конфігурації (наприклад, <code>ім'я.conf</code>). Це ваш персональний цифровий ключ.</p>
+    <div class="step-title"><span class="step-num">3</span> Підключіться до мережі</div>
     <ul>
-      <li>Відкрийте програму WireGuard.</li>
-      <li>Натисніть <b>Import tunnel(s) from file</b> (або `Cmd + O` на Mac).</li>
-      <li>Виберіть файл <code>.conf</code>, який вам надіслали.</li>
-      <li>Натисніть кнопку <b>Activate</b>. Статус має змінитися на зелений (Active).</li>
+      <li>Відкрийте WireGuard.</li>
+      <li>Натисніть <b>Import tunnel(s) from file</b> (або <code>Cmd + O</code> на Mac).</li>
+      <li>Виберіть файл <code>.conf</code>, який надіслав Ілля.</li>
+      <li>Натисніть <b>Activate</b>. Статус зміниться на зелений.</li>
     </ul>
+    
+    <div class="warning-block">
+      <b>УВАГА:</b> Коли VPN увімкнено, УВЕСЬ ваш інтернет-трафік іде через офіс. Обов'язково <b>вимикайте WireGuard (Deactivate)</b>, коли закінчили завантаження матеріалів, щоб не перевантажувати офісний інтернет!
+    </div>
   </div>
 
   <div class="step">
-    <div class="step-title"><span class="step-num">4</span> Підключіться до робочих папок</div>
-    <p style="font-size: 15px; color: #ccc;">Тепер ви у внутрішній мережі студії. Щоб змонтувати диск із матеріалами (для користувачів Mac):</p>
-    <ul>
-      <li>Перейдіть у <b>Finder</b>.</li>
-      <li>Натисніть комбінацію <b>Cmd + K</b> (Підключитися до сервера).</li>
-      <li>Вставте адресу нижче та натисніть "Підключитися":</li>
-    </ul>
+    <div class="step-title"><span class="step-num">4</span> Доступ до папок</div>
+    <p style="font-size: 14px; color: #9ca3af;">У Finder натисніть <b>Cmd + K</b> та вставте цю адресу:</p>
     
     <div class="code-row">
       <code id="smb-link">smb://192.168.88.200</code>
       <button class="copy-mini" onclick="copyText('smb-link')">Copy</button>
     </div>
 
-    <p style="font-size: 15px; color: #ccc; margin-top: 20px;">Для входу в панель керування сервером (через браузер):</p>
+    <p style="font-size: 14px; color: #9ca3af; margin-top: 15px;">Панель керування (через браузер):</p>
     <div class="code-row">
       <code id="web-link">http://192.168.88.200:8080</code>
       <button class="copy-mini" onclick="copyText('web-link')">Copy</button>
     </div>
   </div>
 
+  <div class="faq-section">
+    <div class="faq-title">Розв'язання проблем</div>
+    
+    <div class="faq-item">
+      <div class="faq-q">VPN увімкнений, але немає інтернету / файли не відкриваються</div>
+      <div class="faq-a">Ваш IP-адрес ще не додали до білого списку. Зачекайте, поки Ілля відпише, що додав вас, і спробуйте підключитися знову.</div>
+    </div>
+    
+    <div class="faq-item">
+      <div class="faq-q">IP додано, але підключення все одно не працює</div>
+      <div class="faq-a">Скоріш за все, в офісі зараз відсутнє світло або зник інтернет, тому сервер фізично вимкнений.</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-  // ВПИШІТЬ ВАШ НОМЕР ТУТ (у форматі 380...)
-  const adminPhone = "380XXXXXXXXX"; 
-
-  // Отримання IP
-  fetch('https://api64.ipify.org?format=json')
+  // Отримання IP та локації через безкоштовне API GeoJS
+  fetch('https://get.geojs.io/v1/ip/geo.json')
     .then(res => res.json())
     .then(data => {
-      const ip = data.ip;
-      document.getElementById('user-ip').innerText = ip;
+      document.getElementById('user-ip').innerText = data.ip;
       
-      // Формуємо лінк WhatsApp
-      const message = encodeURIComponent("Привіт! Я підключаюся до сервера. Мій поточний IP: " + ip);
-      document.getElementById('wa-link').href = `https://wa.me/${adminPhone}?text=${message}`;
+      // Виводимо місто та країну, якщо вони є
+      const city = data.city || "Невідоме місто";
+      const country = data.country || "Невідома країна";
+      document.getElementById('user-location').innerText = `${city}, ${country}`;
     })
     .catch(err => {
       document.getElementById('user-ip').innerText = "Помилка мережі";
-      document.getElementById('user-ip').style.fontSize = "18px";
+      document.getElementById('user-location').innerText = "Вимкніть VPN або AdBlock";
     });
 
   function copyIp() {
     const ip = document.getElementById('user-ip').innerText;
+    const loc = document.getElementById('user-location').innerText;
+    
     if(ip && ip !== "визначаємо..." && ip !== "Помилка мережі") {
-      navigator.clipboard.writeText(ip);
-      alert("Ваш IP (" + ip + ") скопійовано! Надішліть його адміну.");
+      const textToCopy = `IP: ${ip} (${loc})`;
+      navigator.clipboard.writeText(textToCopy);
+      
+      const btn = event.target;
+      const originalText = btn.innerText;
+      btn.innerText = "СКОПІЙОВАНО!";
+      btn.style.background = "#2d6285";
+      setTimeout(() => { 
+        btn.innerText = originalText; 
+        btn.style.background = "#3A7CA5";
+      }, 2000);
     }
   }
 
@@ -167,16 +234,13 @@
     const text = document.getElementById(id).innerText;
     navigator.clipboard.writeText(text);
     
-    // Візуальний фідбек на кнопці
     const btn = event.target;
     const originalText = btn.innerText;
     btn.innerText = "Done!";
-    btn.style.background = "#00d1b2";
-    btn.style.color = "#000";
+    btn.style.background = "#3A7CA5";
     setTimeout(() => { 
       btn.innerText = originalText; 
-      btn.style.background = "#333";
-      btn.style.color = "#fff";
+      btn.style.background = "#1f2937";
     }, 2000);
   }
 </script>
