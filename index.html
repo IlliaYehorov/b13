@@ -16,30 +16,26 @@
       --warn-text: #eab308; --warn-bg: rgba(245, 158, 11, 0.08); --warn-border: #eab308;
       
       --server-filter: invert(1) brightness(100) contrast(100) drop-shadow(0 12px 24px rgba(0,0,0,0.6));
-      --open-bg: #1f1f1f; --block-border: transparent; --block-shadow: none;
-      --warn-border-width: 1px;
+      --open-bg: #1f1f1f; --block-border: transparent;
+      --accent-blue: #3b82f6;
     }
 
-    /* Світла тема: Єдиний паперовий відтінок для всіх блоків */
+    /* Світла тема: Матова естетика Claude */
     body.light-theme {
-      --bg-main: #EBE8E0; /* Темніший фон сторінки */
-      --bg-block: #F4F3EF; /* Єдиний приглушений "off-white" для ВСІХ блоків */
+      --bg-main: #EBE8E0; 
+      --bg-block: #F4F3EF; /* Єдиний приглушений білий для ВСІХ блоків */
       --bg-hover: #E2E0D8; 
-      
       --text-main: #4B4945; --text-muted: #7E7B74; --text-heading: #23211F; 
       --border: #DFDBD0; 
       --accent-text: #2D6B66; --accent-bg: #E1EBEA; 
       
-      /* Блок Важливо: жовта обводка 1px, фоновий колір такий самий */
-      --warn-text: #8C6314; 
-      --warn-bg: var(--bg-block); 
-      --warn-border: #D97706; 
-      --warn-border-width: 1px; /* Фіксовано 1px */
+      /* Блок Важливо: 1px обводка */
+      --warn-text: #8C6314; --warn-bg: var(--bg-block); --warn-border: #D97706; 
       
       --server-filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); 
-      --open-bg: var(--bg-block); /* Відкритий блок зливається з іншими */
+      --open-bg: var(--bg-block); 
       --block-border: #DFDBD0;
-      --block-shadow: none; 
+      --accent-blue: #2563eb;
     }
 
     * { box-sizing: border-box; }
@@ -54,14 +50,9 @@
     h1, h2, h3, .heading-text { color: var(--text-heading); font-weight: 600; margin: 0; transition: color 0.3s ease; }
     
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
-    
-    .logo-container img { 
-      display: block; width: 180px; min-height: 40px; height: auto; opacity: 0.9; 
-      object-fit: contain; font-size: 14px; color: var(--text-muted);
-    }
+    .logo-container img { display: block; width: 180px; height: auto; opacity: 0.9; }
     .logo-white { display: block !important; }
     .logo-black { display: none !important; }
-    
     body.light-theme .logo-white { display: none !important; }
     body.light-theme .logo-black { display: block !important; opacity: 0.85; }
 
@@ -77,34 +68,28 @@
     
     .callout {
       background: var(--bg-block); padding: 32px; border-radius: 24px; margin-bottom: 40px; 
-      font-size: 15px; border: 1px solid var(--block-border); box-shadow: var(--block-shadow);
-      transition: all 0.3s ease;
+      font-size: 15px; border: 1px solid var(--block-border); transition: all 0.3s ease;
     }
     .callout-wrapper { display: flex; gap: 40px; align-items: center; }
     .callout-text { flex: 1; }
-    .callout-server { display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .server-icon { height: 180px; width: auto; filter: var(--server-filter); opacity: 0.9; transition: filter 0.3s ease; }
     
     .warning-callout {
       background: var(--warn-bg); color: var(--warn-text);
       padding: 20px 24px; border-radius: 16px; font-size: 14px; line-height: 1.6;
-      border: var(--warn-border-width) solid var(--warn-border); transition: all 0.3s ease;
+      border: 1px solid var(--warn-border); transition: all 0.3s ease;
     }
     .warning-callout code { background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
-    body.light-theme .warning-callout code { background: rgba(0,0,0,0.05); }
 
     .step-block { 
       background: var(--bg-block); border-radius: 24px; margin-bottom: 20px;
-      border: 1px solid var(--block-border); box-shadow: var(--block-shadow);
-      transition: all 0.3s ease; overflow: hidden;
+      border: 1px solid var(--block-border); transition: all 0.3s ease; overflow: hidden;
     }
-    .step-block:hover { border-color: var(--text-muted); }
     .step-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; }
     .step-header-left { display: flex; align-items: center; }
     .chevron { width: 20px; height: 20px; color: var(--text-muted); transition: transform 0.3s ease; }
     
     .step-content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
-    .step-content-inner { overflow: hidden; }
     .open .step-content-wrapper { grid-template-rows: 1fr; }
     .open .chevron { transform: rotate(180deg); color: var(--text-heading); }
     .open { border-color: var(--border); background: var(--open-bg); }
@@ -113,58 +98,48 @@
     .step-num { background: var(--accent-bg); color: var(--accent-text); padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px; }
     .step-title { font-size: 18px; }
     
+    /* "Вшитий" дизайн блоку IP */
     .ip-row {
-      background: var(--bg-main); padding: 12px; border-radius: 16px; margin: 16px 0; 
+      padding: 24px 0; margin: 16px 0; 
       display: flex; align-items: center; justify-content: space-between; 
-      border: 1px solid var(--border); transition: all 0.3s ease;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
     }
-    
     .ip-btn-wrapper { flex-shrink: 0; }
-    
     .ip-value { 
       font-family: monospace; font-size: 24px; color: var(--text-heading); font-weight: 600; 
-      border-left: 1px solid var(--border); border-right: 1px solid var(--border); 
-      padding: 0 24px; flex: 1; text-align: center;
+      flex: 1; text-align: center;
     }
-    
     .ip-location {
       display: flex; flex-direction: column; min-width: 140px; padding-left: 24px;
-      line-height: 1.4; text-align: left;
+      line-height: 1.4; text-align: left; border-left: 1px solid var(--border);
     }
     #user-city { font-size: 14px; font-weight: 600; color: var(--text-main); }
     #user-country { font-size: 13px; color: var(--text-muted); }
     
     .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
-    .btn:hover { background: var(--bg-hover); border-color: var(--text-muted); }
-    .btn-primary { background: var(--text-heading); color: var(--bg-block); border: 1px solid var(--text-heading); font-weight: 600; }
-    .btn-primary:hover { background: transparent; color: var(--text-heading); }
-
-    .action-hint { font-size: 14px; color: var(--warn-text); background: var(--warn-bg); padding: 16px 20px; border-radius: 16px; margin-top: 16px; font-weight: 500; border: var(--warn-border-width) solid var(--warn-border); transition: all 0.3s ease; }
+    .btn:hover { background: var(--bg-hover); }
     
-    .code-row { background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); transition: all 0.3s ease; }
+    /* Акцентна блакитна кнопка */
+    .btn-accent { background: var(--accent-blue); color: #ffffff; border: 1px solid var(--accent-blue); font-weight: 600; }
+    .btn-accent:hover { filter: brightness(1.1); }
+
+    .code-row { background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin: 16px 0; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
     code { color: var(--text-heading); font-family: monospace; font-size: 14px; }
     
-    .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; flex-shrink: 0; display: flex; align-items: center; transition: 0.2s; }
+    .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; transition: 0.2s; }
     .copy-mini:hover { color: var(--text-heading); border-color: var(--text-muted); background: var(--bg-hover); }
-    .copy-icon { width: 14px; height: 14px; margin-right: 6px; }
     
-    ul { padding-left: 20px; margin-top: 16px; } li { margin-bottom: 10px; } b { color: var(--text-heading); }
-    .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-    .app-link:hover { color: var(--text-heading); text-decoration: underline; }
+    ul { padding-left: 20px; margin-top: 16px; } li { margin-bottom: 10px; }
+    .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; }
 
     @media (max-width: 768px) {
       body { padding: 40px 15px; }
-      .header-row { padding-left: 24px; margin-bottom: 40px; }
-      .step-block, .callout { border-radius: 20px; }
-      .callout-wrapper { flex-direction: column-reverse; gap: 24px; align-items: flex-start; }
-      .step-header { padding: 20px 24px; } .step-content { padding: 0 24px 24px 24px; }
+      .header-row { padding-left: 24px; }
+      .callout-wrapper { flex-direction: column-reverse; gap: 24px; }
+      .ip-row { flex-direction: column; text-align: center; gap: 20px; }
+      .ip-location { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 16px; width: 100%; align-items: center; }
       .code-row { flex-direction: column; align-items: flex-start; gap: 16px; }
       .copy-mini { margin-left: 0; width: 100%; justify-content: center; }
-      .server-icon { height: 120px; }
-      .ip-row { flex-direction: column; align-items: stretch; text-align: center; gap: 0; padding: 20px; }
-      .ip-btn-wrapper { width: 100%; display: flex; justify-content: center; margin-bottom: 16px; }
-      .ip-value { border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; margin-bottom: 16px; font-size: 28px; }
-      .ip-location { padding-left: 0; align-items: center; min-width: auto; }
     }
   </style>
 </head>
@@ -174,20 +149,20 @@
   
   <div class="header-row">
     <div class="logo-container">
-      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="Логотип Babylon13 (Білий)" class="logo-white">
-      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" alt="Логотип Babylon13 (Чорний)" class="logo-black">
+      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="White" class="logo-white">
+      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" alt="Black" class="logo-black">
     </div>
-    <button class="theme-toggle" id="theme-btn" title="Змінити тему">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    <button class="theme-toggle" id="theme-btn">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     </button>
   </div>
 
   <div class="callout">
     <div class="callout-wrapper">
       <div class="callout-text">
-        <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по віддаленому користуванню офісним сервером B13-QNAP-1688</div>
-        <p style="margin: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби знаходитесь в локальній мережі офісу, але з обмеженнями по швидкості інтернету та шифрування. Підключення дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої матеріали чи викачувати їх для локального монтажу.</p>
+        <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по користуванню офісним сервером B13-QNAP-1688</div>
+        <p style="margin: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби знаходитесь в локальній мережі офісу, але з обмеженнями по швидкості інтернету. Підключення дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої матеріали чи викачувати їх для локального монтажу.</p>
       </div>
       <div class="callout-server">
         <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP">
@@ -195,12 +170,12 @@
     </div>
 
     <div class="warning-callout" style="margin-top: 32px;">
-      <b style="color: inherit; font-size: 15px;">Важливо:</b>
-      <ul style="margin-top: 8px; margin-bottom: 0; color: inherit;">
+      <b>Важливо:</b>
+      <ul style="margin-top: 8px; margin-bottom: 0;">
         <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте обережні.</li>
         <li>Розміщуйте свої проекти не в головній (кореневій) папці диску, а в папках відповідного року.</li>
-        <li>Називайте папки своїх проектів та матеріалів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code> (наприклад: <code>1979-05-19_Apocalypse-Now_F-Coppola</code>).</li>
-        <li>Коли VPN увімкнено, увесь ваш трафік іде через офіс. Швидкість вашого інтернету падатиме в 2-3 рази за використання цього підключення. Після роботи одразу вимикайте тунель WireGuard.</li>
+        <li>Називайте папки своїх проектів та матеріалів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>.</li>
+        <li>Коли VPN увімкнено, увесь ваш трафік іде через офіс. Швидкість вашого інтернету падатиме в 2-3 рази. Після роботи одразу вимикайте тунель WireGuard.</li>
       </ul>
     </div>
   </div>
@@ -208,137 +183,98 @@
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="step-content-wrapper">
-      <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android і працює у фоні.</p>
-          <a href="https://www.wireguard.com/install/" target="_blank" class="btn" style="margin-top: 8px;">
-            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Завантажити WireGuard
-          </a>
-        </div>
-      </div>
-    </div>
+    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
+      <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android і працює у фоні.</p>
+      <a href="https://www.wireguard.com/install/" target="_blank" class="btn" style="margin-top: 8px;">Завантажити WireGuard</a>
+    </div></div>
   </div>
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num">Крок 2</span><span class="heading-text step-title">Авторизація мережі</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="step-content-wrapper">
-      <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. <b>Прийдіть додому чи в те місце, з якого плануєте працювати з файлами, та підключіться до Wi-Fi чи кабелю.</b> Не використовуйте тимчасові місця перебування, публічні Wi-Fi тощо. Скопіюйте свій IP нижче:</p>
-          
-          <div class="ip-row">
-            <div class="ip-btn-wrapper">
-              <button class="btn btn-primary" id="copy-btn-ip" onclick="copyIp()">
-                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Скопіювати мій IP
-              </button>
-            </div>
-            
-            <div class="ip-value" id="user-ip">...</div>
-            
-            <div class="ip-location">
-              <span id="user-city">Перевірка...</span>
-              <span id="user-country"></span>
-            </div>
-          </div>
-          
-          <div class="action-hint">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard. Це буде ваш цифровий ключ до сервера.</div>
+    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
+      <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. Прийдіть додому, підключіться до Wi-Fi та скопіюйте свій IP нижче:</p>
+      
+      <div class="ip-row">
+        <div class="ip-btn-wrapper">
+          <button class="btn btn-accent" id="copy-btn-ip" onclick="copyIp()">Скопіювати мій IP</button>
+        </div>
+        <div class="ip-value" id="user-ip">...</div>
+        <div class="ip-location">
+          <span id="user-city">Перевірка...</span>
+          <span id="user-country"></span>
         </div>
       </div>
-    </div>
+      
+      <p style="margin-bottom: 0;">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard. Це буде ваш цифровий ключ до сервера.</p>
+    </div></div>
   </div>
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 3</span><span class="heading-text step-title">Підключення</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <div class="step-header-left"><span class="step-num">Крок 3</span><span class="heading-text step-title">Встановлення конфігурації WireGuard</span></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="step-content-wrapper">
-      <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();">
-          <ul style="margin-top: 0;">
-            <li>Відкрийте програму WireGuard.</li>
-            <li>Натисніть <b>Import tunnel(s) from file</b> (або <code>Cmd + O</code> на Mac).</li>
-            <li>Виберіть файл <code>.conf</code>, який отримали від Іллі.</li>
-            <li>Натисніть <b>Activate</b>.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
+      <ul style="margin-top: 0;">
+        <li>Відкрийте програму WireGuard.</li>
+        <li>Натисніть <b>Import tunnel(s) from file</b> (або <code>Cmd + O</code> на Mac).</li>
+        <li>Виберіть файл <code>.conf</code>, який отримали від Іллі, та підтвердіть встановлення.</li>
+      </ul>
+    </div></div>
   </div>
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 4</span><span class="heading-text step-title">Робота з сервером</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <div class="step-header-left"><span class="step-num">Крок 4</span><span class="heading-text step-title">Підключення та робота з сервером</span></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="step-content-wrapper">
-      <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0;">Щоб змонтувати диск із матеріалами у Finder (для Mac):</p>
-          <ul>
-            <li>У верхньому меню Finder виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або натисніть <code>Cmd + K</code>).</li>
-            <li>Вставте адресу нижче та натисніть «Під'єднатися». Після приєднання ви побачите наше основне сховище — <b>home</b>.</li>
-          </ul>
-          
-          <div class="code-row">
-            <code id="smb-link">smb://192.168.88.200</code>
-            <button class="copy-mini" onclick="copyText('smb-link')">Скопіювати</button>
-          </div>
-
-          <p style="margin-top: 32px;">Панель керування сервером (через браузер):</p>
-          <div class="code-row">
-            <code id="web-link">http://192.168.88.200:8080</code>
-            <button class="copy-mini" onclick="copyText('web-link')">Скопіювати</button>
-          </div>
-          
-          <p style="font-size: 14px; color: var(--text-muted); margin-top: 16px;">
-            Для авторизації в панелі керування потрібно встановити QNAP Authenticator: 
-            <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345?l=en-GB" target="_blank" class="app-link">iOS</a> або 
-            <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator&hl=zhTW&gl=US&pli=1" target="_blank" class="app-link">Android</a>.
-          </p>
-        </div>
+    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
+      <p style="margin-top: 0;">Натисніть <b>Activate</b> у WireGuard, скопіюйте адресу сховища:</p>
+      
+      <div class="code-row">
+        <code id="smb-link">smb://192.168.88.200</code>
+        <button class="copy-mini" onclick="copyText('smb-link')">Скопіювати</button>
       </div>
-    </div>
+
+      <p style="margin-top: 24px;">Далі у верхньому меню Finder виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або натисніть <code>Cmd + K</code>).</p>
+      <p>Вставте скопійовану адресу та натисніть «Під'єднатися». Після приєднання ви побачите наше основне сховище — <b>home</b>.</p>
+      
+      <p style="font-size: 14px; color: var(--text-muted); margin-top: 32px;">
+        Панель керування через браузер: <code>http://192.168.88.200:8080</code>. Потрібен застосунок 
+        <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345?l=en-GB" target="_blank" class="app-link">QNAP Authenticator</a>.
+      </p>
+    </div></div>
   </div>
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num">Крок 5</span><span class="heading-text step-title">Відключення</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="step-content-wrapper">
-      <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>), щоб не навантажувати офісну мережу та не уповільнювати ваш домашній інтернет.</p>
-        </div>
-      </div>
-    </div>
+    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
+      <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>), щоб не навантажувати офісну мережу та не уповільнювати ваш домашній інтернет.</p>
+    </div></div>
   </div>
 
   <div class="step-block open" onclick="this.classList.toggle('open')" style="margin-bottom: 0;">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span><span class="heading-text step-title">Можливі проблеми</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="step-content-wrapper">
-      <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0; margin-bottom: 12px;">Якщо після активації WireGuard з'єднання не відбувається:</p>
-          <ul style="margin: 0; padding-left: 20px;">
-            <li>В офісі відсутні світло або інтернет.</li>
-            <li>Ваш домашній провайдер блокує VPN.</li>
-            <li>Змінилася ваша IP-адреса.</li>
-          </ul>
-          <p style="margin-top: 12px; margin-bottom: 0;">Якщо проблема не зникає — напишіть Іллі.</p>
-        </div>
-      </div>
-    </div>
+    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
+      <p style="margin-top: 0; margin-bottom: 12px;">Якщо з'єднання не відбувається:</p>
+      <ul style="margin: 0;">
+        <li>В офісі немає світла або інтернету.</li>
+        <li>Ваш провайдер блокує VPN-з'єднання.</li>
+        <li>Змінилася ваша IP-адреса (динамічний IP).</li>
+      </ul>
+      <p style="margin-top: 12px; margin-bottom: 0;">Перевірте з'єднання пізніше або напишіть Іллі.</p>
+    </div></div>
   </div>
 </div>
 
@@ -359,7 +295,7 @@
       document.getElementById('user-country').innerText = data.country || "";
     } catch (error) {
       document.getElementById('user-ip').innerText = "Помилка";
-      document.getElementById('user-city').innerText = "Перевірте VPN";
+      document.getElementById('user-city').innerText = "Вимкніть VPN";
     }
   }
   getIpData();
