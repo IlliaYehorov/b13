@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root { 
-      /* Темна тема (За замовчуванням) */
+      /* Темна тема */
       --bg-main: #151515; --bg-block: #1d1d1d; --bg-hover: #262626;
       --text-main: #d4d4d4; --text-muted: #8b8b8b; --text-heading: #f4f4f4;
       --border: #2a2a2a; --accent-text: #78a9c7; --accent-bg: rgba(120, 169, 199, 0.15);
@@ -48,7 +48,6 @@
     
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
     
-    /* Стилі для посилання-логотипу */
     .logo-link { display: block; transition: opacity 0.2s ease; text-decoration: none; }
     .logo-link:hover { opacity: 0.7 !important; }
 
@@ -103,7 +102,7 @@
     .ip-row {
       padding: 24px 0; margin: 16px 0; 
       display: flex; align-items: center; justify-content: space-between; 
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      border: none; /* Прибрано лінії */
     }
     .ip-btn-wrapper { flex-shrink: 0; }
     .ip-value { 
@@ -120,17 +119,21 @@
     .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
     .btn:hover { background: var(--bg-hover); }
     
+    /* Новий стиль для кнопки IP */
+    .btn-ip { background: var(--bg-main); color: var(--text-heading); border: 1.5px solid var(--accent-blue); }
+
     .btn-accent { background: var(--accent-blue); color: #ffffff; border: 1px solid var(--accent-blue); font-weight: 600; }
     .btn-accent:hover { filter: brightness(1.1); }
 
     .code-row { background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin: 16px 0; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); }
     code { color: var(--text-heading); font-family: monospace; font-size: 14px; }
     
-    .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; transition: 0.2s; }
+    .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
     .copy-mini:hover { color: var(--text-heading); border-color: var(--text-muted); background: var(--bg-hover); }
     
     ul { padding-left: 20px; margin-top: 16px; } li { margin-bottom: 10px; }
-    .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; }
+    .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: 0.2s; }
+    .app-link:hover { border-bottom-color: var(--accent-text); }
 
     @media (max-width: 768px) {
       body { padding: 40px 15px; }
@@ -164,7 +167,7 @@
     <div class="callout-wrapper">
       <div class="callout-text">
         <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по користуванню офісним сервером B13-QNAP-1688</div>
-        <p style="margin: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби знаходитесь в локальній мережі офісу, але з обмеженнями по швидкості інтернету. Підключення дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої матеріали чи викачувати їх для локального монтажу.</p>
+        <p style="margin: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. Підключення дозволить вам переглядати, викачувати чи завантажувати свої матеріали напряму на сервер. Монтувати напряму з файлів на сервері не вийде через обмежену швидкість інтернету.</p>
       </div>
       <div class="callout-server">
         <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP">
@@ -174,36 +177,36 @@
     <div class="warning-callout" style="margin-top: 32px;">
       <b>Важливо:</b>
       <ul style="margin-top: 8px; margin-bottom: 0;">
-        <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте обережні.</li>
+        <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди.</li>
         <li>Розміщуйте свої проекти не в головній (кореневій) папці диску, а в папках відповідного року.</li>
-        <li>Називайте папки своїх проектів та матеріалів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>.</li>
-        <li>Коли VPN увімкнено, увесь ваш трафік іде через офіс. Швидкість вашого інтернету падатиме в 2-3 рази. Після роботи одразу вимикайте тунель WireGuard.</li>
+        <li>Називайте папки своїх проектів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>.</li>
+        <li>Коли VPN увімкнено, швидкість вашого інтернету може падати. Після роботи одразу вимикайте тунель WireGuard.</li>
       </ul>
     </div>
   </div>
 
-  <div class="step-block open" onclick="this.classList.toggle('open')">
+  <div class="step-block" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android і працює у фоні.</p>
+      <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android.</p>
       <a href="https://www.wireguard.com/install/" target="_blank" class="btn" style="margin-top: 8px;">Завантажити WireGuard</a>
     </div></div>
   </div>
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 2</span><span class="heading-text step-title">Авторизація мережі</span></div>
+      <div class="step-header-left"><span class="step-num">Крок 2</span><span class="heading-text step-title">Авторизація вашого IP</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. Прийдіть додому, підключіться до Wi-Fi та скопіюйте свій IP нижче:</p>
+      <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. Прийдіть додому, підключіться до Wi-Fi чи по кабелю та скопіюйте свій IP нижче. Не використовуйте для цього тимчасові місця перебування чи публічні Wi-Fi.</p>
       
       <div class="ip-row">
         <div class="ip-btn-wrapper">
-          <button class="btn btn-accent" id="copy-btn-ip" onclick="copyIp()">Скопіювати мій IP</button>
+          <button class="btn btn-ip" id="copy-btn-ip" onclick="copyIp()">Скопіювати мій IP</button>
         </div>
         <div class="ip-value" id="user-ip">...</div>
         <div class="ip-location">
@@ -212,11 +215,11 @@
         </div>
       </div>
       
-      <p style="margin-bottom: 0;">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard. Це буде ваш цифровий ключ до сервера.</p>
+      <p style="margin-bottom: 0;">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard.</p>
     </div></div>
   </div>
 
-  <div class="step-block open" onclick="this.classList.toggle('open')">
+  <div class="step-block" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num">Крок 3</span><span class="heading-text step-title">Встановлення конфігурації WireGuard</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -224,8 +227,8 @@
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
       <ul style="margin-top: 0;">
         <li>Відкрийте програму WireGuard.</li>
-        <li>Натисніть <b>Import tunnel(s) from file</b> (або <code>Cmd + O</code> на Mac).</li>
-        <li>Виберіть файл <code>.conf</code>, який отримали від Іллі, та підтвердіть встановлення.</li>
+        <li>Натисніть <b>Import tunnel(s) from file</b>.</li>
+        <li>Виберіть файл <code>.conf</code>, який отримали від Іллі.</li>
       </ul>
     </div></div>
   </div>
@@ -236,30 +239,38 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Натисніть <b>Activate</b> у WireGuard, скопіюйте адресу сховища:</p>
+      <p style="margin-top: 0;">Натисніть <b>Activate</b> у WireGuard в установленому конфігу.</p>
+      <p>Скопіюйте адресу сховища:</p>
       
       <div class="code-row">
         <code id="smb-link">smb://192.168.88.200</code>
         <button class="copy-mini" onclick="copyText('smb-link')">Скопіювати</button>
       </div>
 
-      <p style="margin-top: 24px;">Далі у верхньому меню Finder виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або натисніть <code>Cmd + K</code>).</p>
-      <p>Вставте скопійовану адресу та натисніть «Під'єднатися». Після приєднання ви побачите наше основне сховище — <b>home</b>.</p>
+      <p style="margin-top: 24px;">Далі у верхньому меню Finder виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або <code>Cmd + K</code>). Вставте адресу та виберіть том <b>home</b>.</p>
       
-      <p style="font-size: 14px; color: var(--text-muted); margin-top: 32px;">
-        Панель керування через браузер: <code>http://192.168.88.200:8080</code>. Потрібен застосунок 
-        <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345?l=en-GB" target="_blank" class="app-link">QNAP Authenticator</a>.
-      </p>
+      <div style="margin-top: 32px; padding: 20px; background: var(--bg-main); border-radius: 16px; border: 1px solid var(--border);">
+        <p style="margin-top: 0; font-weight: 600;">Панель керування сервером через браузер:</p>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <code id="web-panel">http://192.168.88.200:8080</code>
+          <button class="copy-mini" onclick="copyText('web-panel')">Копіювати</button>
+        </div>
+        <p style="font-size: 14px; margin-bottom: 0; color: var(--text-muted);">
+          Для авторизації встановіть <b>QNAP Authenticator</b>: 
+          <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345" target="_blank" class="app-link">iOS</a> або 
+          <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator" target="_blank" class="app-link">Android</a>.
+        </p>
+      </div>
     </div></div>
   </div>
 
-  <div class="step-block open" onclick="this.classList.toggle('open')">
+  <div class="step-block" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 5</span><span class="heading-text step-title">Відключення</span></div>
+      <div class="step-header-left"><span class="step-num">Крок 5</span><span class="heading-text step-title">Завершення роботи</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>), щоб не навантажувати офісну мережу та не уповільнювати ваш домашній інтернет.</p>
+      <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>), щоб не навантажувати офісну мережу та повернути повну швидкість вашого інтернету.</p>
     </div></div>
   </div>
 
@@ -272,10 +283,9 @@
       <p style="margin-top: 0; margin-bottom: 12px;">Якщо з'єднання не відбувається:</p>
       <ul style="margin: 0;">
         <li>В офісі немає світла або інтернету.</li>
-        <li>Ваш провайдер блокує VPN-з'єднання.</li>
-        <li>Змінилася ваша IP-адреса (динамічний IP).</li>
+        <li>Змінилася ваша IP-адреса (динамічний IP) або ви заходите з іншого місця перебування. Ще раз перевірте свою IP адресу на цьому сайті та впевніться, що вона збігається з тою ж, яку ви подавали у білий список IP.</li>
       </ul>
-      <p style="margin-top: 12px; margin-bottom: 0;">Перевірте з'єднання пізніше або напишіть Іллі.</p>
+      <p style="margin-top: 12px; margin-bottom: 0;">Якщо IP змінився — просто надішліть новий Іллі.</p>
     </div></div>
   </div>
 </div>
@@ -297,14 +307,14 @@
       document.getElementById('user-country').innerText = data.country || "";
     } catch (error) {
       document.getElementById('user-ip').innerText = "Помилка";
-      document.getElementById('user-city').innerText = "Вимкніть VPN";
+      document.getElementById('user-city').innerText = "Вимкніть VPN для перевірки";
     }
   }
   getIpData();
 
   function copyIp() {
     const ip = document.getElementById('user-ip').innerText;
-    if(ip && ip !== "...") {
+    if(ip && ip !== "..." && ip !== "Помилка") {
       navigator.clipboard.writeText(ip);
       const btn = document.getElementById('copy-btn-ip');
       const orig = btn.innerHTML;
