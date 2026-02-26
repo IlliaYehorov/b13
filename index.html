@@ -131,44 +131,48 @@
       <div class="callout-server"><img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP"></div>
     </div>
 
-    <div class="warning-callout" style="margin-top: 32px;">
+<div class="warning-callout" style="margin-top: 32px;">
       <b>Важливо:</b>
       <ul style="margin-top: 8px; margin-bottom: 0;">
-        <li>Файли на сервері — це єдині оригінали. Якщо ви видалите файл у себе, він видалиться для всієї команди.</li>
-        <li>Розміщуйте проекти не в корені, а в папках відповідного року.</li>
-        <li>Формат папок: <code>РРРР-ММ-ДД_Назва-проекту_Автор</code> (напр. <code>1979-05-19_Apocalypse-Now_F-Coppola</code>).</li>
-        <li>Коли VPN увімкнено, швидкість вашого інтернету може падати. Вимикайте тунель після роботи.</li>
+        <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди.</li>
+        <li>Розміщуйте свої проекти не в головній (кореневій) папці диску, а в папках відповідного року.</li>
+        <li>Називайте папки своїх проектів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>.</li>
+        <li>Коли VPN увімкнено, швидкість вашого інтернету може падати. Після роботи одразу вимикайте тунель WireGuard.</li>
       </ul>
     </div>
   </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
+<div class="step-block" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення клієнта WireGuard</span></div>
+      <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Завантажте офіційну програму для вашої ОС.</p>
-      <a href="https://www.wireguard.com/install/" target="_blank" class="btn">Завантажити WireGuard</a>
+      <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android.</p>
+      <a href="https://www.wireguard.com/install/" target="_blank" class="btn" style="margin-top: 8px;">Завантажити WireGuard</a>
     </div></div>
   </div>
 
-  <div class="step-block open" onclick="this.classList.toggle('open')">
+<div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left"><span class="step-num">Крок 2</span><span class="heading-text step-title">Авторизація вашого IP</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin: 0;">Підключіться до домашнього Wi-Fi чи по кабелю та скопіюйте IP. Не використовуйте публічні мережі.</p>
+      <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. Прийдіть додому, підключіться до Wi-Fi чи по кабелю та скопіюйте свій IP нижче. Не використовуйте для цього тимчасові місця перебування чи публічні Wi-Fi.</p>
+      
       <div class="ip-row">
-        <button class="btn btn-ip" id="copy-btn-ip" onclick="copyIp()">Скопіювати мій IP</button>
+        <div class="ip-btn-wrapper">
+          <button class="btn btn-ip" id="copy-btn-ip" onclick="copyIp()">Скопіювати мій IP</button>
+        </div>
         <div class="ip-value" id="user-ip">...</div>
         <div class="ip-location">
-          <span id="user-city" style="font-size: 14px; font-weight: 600;">Перевірка...</span>
-          <span id="user-country" style="font-size: 13px; color: var(--text-muted);"></span>
+          <span id="user-city">Перевірка...</span>
+          <span id="user-country"></span>
         </div>
       </div>
-      <p style="margin: 0;">Надішліть цей IP Іллі для отримання конфіг-файлу.</p>
+      
+      <p style="margin-bottom: 0;">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard.</p>
     </div></div>
   </div>
 
