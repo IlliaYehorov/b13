@@ -23,15 +23,12 @@
     /* Світла тема: Матова естетика Claude */
     body.light-theme {
       --bg-main: #EBE8E0; 
-      --bg-block: #F4F3EF; /* Єдиний приглушений білий для ВСІХ блоків */
+      --bg-block: #F4F3EF; 
       --bg-hover: #E2E0D8; 
       --text-main: #4B4945; --text-muted: #7E7B74; --text-heading: #23211F; 
       --border: #DFDBD0; 
       --accent-text: #2D6B66; --accent-bg: #E1EBEA; 
-      
-      /* Блок Важливо: 1px обводка */
       --warn-text: #8C6314; --warn-bg: var(--bg-block); --warn-border: #D97706; 
-      
       --server-filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); 
       --open-bg: var(--bg-block); 
       --block-border: #DFDBD0;
@@ -50,6 +47,11 @@
     h1, h2, h3, .heading-text { color: var(--text-heading); font-weight: 600; margin: 0; transition: color 0.3s ease; }
     
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
+    
+    /* Стилі для посилання-логотипу */
+    .logo-link { display: block; transition: opacity 0.2s ease; text-decoration: none; }
+    .logo-link:hover { opacity: 0.7 !important; }
+
     .logo-container img { display: block; width: 180px; height: auto; opacity: 0.9; }
     .logo-white { display: block !important; }
     .logo-black { display: none !important; }
@@ -98,7 +100,6 @@
     .step-num { background: var(--accent-bg); color: var(--accent-text); padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px; }
     .step-title { font-size: 18px; }
     
-    /* "Вшитий" дизайн блоку IP */
     .ip-row {
       padding: 24px 0; margin: 16px 0; 
       display: flex; align-items: center; justify-content: space-between; 
@@ -119,7 +120,6 @@
     .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
     .btn:hover { background: var(--bg-hover); }
     
-    /* Акцентна блакитна кнопка */
     .btn-accent { background: var(--accent-blue); color: #ffffff; border: 1px solid var(--accent-blue); font-weight: 600; }
     .btn-accent:hover { filter: brightness(1.1); }
 
@@ -149,8 +149,10 @@
   
   <div class="header-row">
     <div class="logo-container">
-      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="White" class="logo-white">
-      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" alt="Black" class="logo-black">
+      <a href="https://babylon13.org.ua/" target="_blank" class="logo-link">
+        <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="Логотип Babylon13" class="logo-white">
+        <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" alt="Логотип Babylon13" class="logo-black">
+      </a>
     </div>
     <button class="theme-toggle" id="theme-btn">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
