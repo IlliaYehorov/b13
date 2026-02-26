@@ -19,26 +19,27 @@
       --open-bg: #1f1f1f; --block-border: transparent; --block-shadow: none;
     }
 
-    /* Світла тема: Естетика Claude (паперові, м'які відтінки) */
+    /* Світла тема: Матова, паперова естетика Claude */
     body.light-theme {
-      --bg-main: #f2f1ec; /* Менш насичений, трохи темніший сіро-кремовий фон */
-      --bg-block: #fcfbf9; /* Не чисто білий, а теплий відтінок паперу */
-      --bg-hover: #e8e7e2; /* М'який сірий для ховерів */
+      --bg-main: #EFECE5; 
+      --bg-block: #F6F4EE; 
+      --bg-hover: #E4E0D6; 
       
-      --text-main: #4a4a4a; --text-muted: #737373; 
-      --text-heading: #1a1a1a; 
-      --border: #e2e0d5; /* Складна, м'яка межа */
+      --text-main: #4B4945; 
+      --text-muted: #7E7B74; 
+      --text-heading: #23211F; 
+      --border: #DFDBD0; 
       
-      --accent-text: #0f766e; --accent-bg: #ccfbf1;
+      --accent-text: #2D6B66; --accent-bg: #E1EBEA; 
       
-      --warn-text: #785e13; 
-      --warn-bg: #fdfbe8; 
-      --warn-border: #ede8c6; 
+      --warn-text: #6B5B32; 
+      --warn-bg: #EFE9D4; 
+      --warn-border: #E0D7B6; 
       
-      --server-filter: drop-shadow(0 12px 24px rgba(0,0,0,0.1));
-      --open-bg: #f5f4ef; /* Легке затемнення для відкритого блоку */
-      --block-border: #e6e4db;
-      --block-shadow: 0 4px 12px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.02); 
+      --server-filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); 
+      --open-bg: #EFECE5; 
+      --block-border: #DFDBD0;
+      --block-shadow: none; 
     }
 
     * { box-sizing: border-box; }
@@ -54,12 +55,16 @@
     
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
     
-    /* Логіка перемикання логотипів */
-    .logo-container img { max-width: 180px; height: auto; opacity: 0.9; }
-    .logo-white { display: block; }
-    .logo-black { display: none; }
-    body.light-theme .logo-white { display: none; }
-    body.light-theme .logo-black { display: block; opacity: 0.85; }
+    /* Залізобетонна логіка логотипів зі страховкою від битих посилань */
+    .logo-container img { 
+      display: block; width: 180px; min-height: 40px; height: auto; opacity: 0.9; 
+      object-fit: contain; font-size: 14px; color: var(--text-muted);
+    }
+    .logo-white { display: block !important; }
+    .logo-black { display: none !important; }
+    
+    body.light-theme .logo-white { display: none !important; }
+    body.light-theme .logo-black { display: block !important; opacity: 0.85; }
 
     .theme-toggle {
       background: transparent; border: 1px solid var(--border); border-radius: 100px;
@@ -87,14 +92,14 @@
       border: 1px solid var(--warn-border); transition: all 0.3s ease;
     }
     .warning-callout code { background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
-    body.light-theme .warning-callout code { background: rgba(255,255,255,0.6); }
+    body.light-theme .warning-callout code { background: rgba(0,0,0,0.05); }
 
     .step-block { 
       background: var(--bg-block); border-radius: 24px; margin-bottom: 20px;
       border: 1px solid var(--block-border); box-shadow: var(--block-shadow);
       transition: all 0.3s ease; overflow: hidden;
     }
-    .step-block:hover { border-color: var(--border); }
+    .step-block:hover { border-color: var(--text-muted); }
     .step-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; }
     .step-header-left { display: flex; align-items: center; }
     .chevron { width: 20px; height: 20px; color: var(--text-muted); transition: transform 0.3s ease; }
@@ -119,7 +124,7 @@
     
     .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
     .btn:hover { background: var(--bg-hover); border-color: var(--text-muted); }
-    .btn-primary { background: var(--text-heading); color: var(--bg-main); border: 1px solid var(--text-heading); font-weight: 600; }
+    .btn-primary { background: var(--text-heading); color: var(--bg-block); border: 1px solid var(--text-heading); font-weight: 600; }
     .btn-primary:hover { background: transparent; color: var(--text-heading); }
 
     .action-hint { font-size: 14px; color: var(--warn-text); background: var(--warn-bg); padding: 16px 20px; border-radius: 16px; margin-top: 16px; font-weight: 500; border: 1px solid var(--warn-border); transition: all 0.3s ease; }
@@ -153,8 +158,8 @@
   
   <div class="header-row">
     <div class="logo-container">
-      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="Babylon13" class="logo-white">
-      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" alt="Babylon13" class="logo-black">
+      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="Логотип Babylon13 (Білий)" class="logo-white">
+      <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" alt="Логотип Babylon13 (Чорний)" class="logo-black">
     </div>
     <button class="theme-toggle" id="theme-btn" title="Змінити тему">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -186,7 +191,7 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення клієнта</span></div>
+      <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="step-content-wrapper">
@@ -289,7 +294,7 @@
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>).</p>
+          <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>), щоб не навантажувати офісну мережу та не уповільнювати ваш домашній інтернет.</p>
         </div>
       </div>
     </div>
@@ -303,7 +308,13 @@
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin: 0;">Якщо з'єднання немає, то або в офісі зараз відсутнє світло чи інтернет, або виникли проблеми з вашим домашнім провайдером. Перевірте з'єднання пізніше, і якщо нічого не виходить — напишіть Іллі.</p>
+          <p style="margin-top: 0; margin-bottom: 12px;">Якщо після активації WireGuard з'єднання з сервером не відбувається, причини можуть бути наступними:</p>
+          <ul style="margin-top: 0; margin-bottom: 16px;">
+            <li><b>В офісі немає світла або інтернету.</b> У такому разі сервер тимчасово недоступний для всіх.</li>
+            <li><b>Проблеми з вашим домашнім провайдером.</b> Переконайтеся, що ваш інтернет працює стабільно і не блокує VPN-з'єднання.</li>
+            <li><b>Змінилася ваша IP-адреса.</b> Якщо ваш провайдер видав вам новий динамічний IP, сервер вас не пропустить.</li>
+          </ul>
+          <p style="margin-bottom: 0;">Спробуйте перевірити з'єднання трохи пізніше. Якщо проблема не зникає — напишіть Іллі.</p>
         </div>
       </div>
     </div>
