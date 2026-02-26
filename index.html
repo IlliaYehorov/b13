@@ -9,61 +9,93 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root { 
+      /* Темна тема (За замовчуванням) */
       --bg-main: #151515; --bg-block: #1d1d1d; --bg-hover: #262626;
       --text-main: #d4d4d4; --text-muted: #8b8b8b; --text-heading: #f4f4f4;
       --border: #2a2a2a; --accent-text: #78a9c7; --accent-bg: rgba(120, 169, 199, 0.15);
       --warn-text: #eab308; --warn-bg: rgba(245, 158, 11, 0.08); --warn-border: rgba(245, 158, 11, 0.15);
-      --logo-filter: invert(0); 
+      
+      --logo-filter: none; /* Очищено для темної теми */
       --server-filter: invert(1) brightness(100) contrast(100) drop-shadow(0 12px 24px rgba(0,0,0,0.6));
       --open-bg: #1f1f1f; --block-border: transparent; --block-shadow: none;
     }
+
+    /* Світла тема: Максимально м'які та ергономічні кольори */
     body.light-theme {
-      --bg-main: #f3f4f6; --bg-block: #ffffff; --bg-hover: #e5e7eb;
-      --text-main: #4b5563; --text-muted: #6b7280; --text-heading: #111827;
-      --border: #d1d5db; --accent-text: #0284c7; --accent-bg: #e0f2fe;
-      --warn-text: #b45309; --warn-bg: #fef3c7; --warn-border: #fde68a;
-      --logo-filter: invert(1) brightness(0); 
+      --bg-main: #f6f5f0; /* Off-white, ніжно-кремовий фон сторінки */
+      --bg-block: #ffffff; /* Чисто білі блоки для контрасту на off-white фоні */
+      --bg-hover: #eaeae1; /* Трішки темніший м'який сірий для ховеру */
+      --text-main: #4b5563; /* М'який сірий текст */
+      --text-muted: #777777; 
+      --text-heading: #222222; /* Дуже темно-сірий, не радикально чорний */
+      --border: #deded2; /* М'яка межа */
+      
+      --accent-text: #0284c7; --accent-bg: #e0f2fe;
+      
+      /* М'який, пастельний жовтий блок (FAQ) */
+      --warn-text: #816d2e; /* Стриманий оливково-коричневий текст */
+      --warn-bg: #fbf9eb; /* Дуже блідий, солом'яний фон */
+      --warn-border: #e9e3b6; /* Пастельна межа */
+      
+      /* Суперефективний фільтр: інвертує біле лого babylon13 в чорне */
+      --logo-filter: invert(1); 
+      
       --server-filter: drop-shadow(0 12px 24px rgba(0,0,0,0.15));
-      --open-bg: #f9fafb; --block-border: #e5e7eb;
-      --block-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --open-bg: #fdfdfa; /* Ледь помітний відтінок для відкритих блоків */
+      --block-border: #e8e8e0;
+      --block-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02); /* Дуже тонка тінь */
     }
+
     * { box-sizing: border-box; }
     body { 
       background: var(--bg-main); color: var(--text-main); 
-      font-family: 'Inter', sans-serif; line-height: 1.6; padding: 60px 20px; 
-      display: flex; justify-content: center; margin: 0; transition: all 0.3s ease;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+      line-height: 1.6; padding: 60px 20px; display: flex; justify-content: center; margin: 0;
+      -webkit-font-smoothing: antialiased; transition: background-color 0.3s ease, color 0.3s ease;
     }
+    
     .container { max-width: 860px; width: 100%; }
+    
     h1, h2, h3, .heading-text { color: var(--text-heading); font-weight: 600; margin: 0; transition: color 0.3s ease; }
     
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
-    .logo-container img { max-width: 180px; height: auto; filter: var(--logo-filter); transition: filter 0.3s ease; }
+    .logo-container img { max-width: 180px; height: auto; opacity: 0.9; filter: var(--logo-filter); transition: filter 0.3s ease; }
+
     .theme-toggle {
       background: transparent; border: 1px solid var(--border); border-radius: 100px;
       color: var(--text-muted); padding: 10px; cursor: pointer; transition: 0.2s ease;
+      display: flex; align-items: center; justify-content: center;
     }
     .theme-toggle:hover { color: var(--text-heading); background: var(--bg-hover); }
+    
     .icon-sun { display: none; } .icon-moon { display: block; }
     body.light-theme .icon-sun { display: block; } body.light-theme .icon-moon { display: none; }
     
     .callout {
       background: var(--bg-block); padding: 32px; border-radius: 24px; margin-bottom: 40px; 
-      border: 1px solid var(--block-border); box-shadow: var(--block-shadow); transition: all 0.3s ease;
+      font-size: 15px; border: 1px solid var(--block-border); box-shadow: var(--block-shadow);
+      transition: all 0.3s ease;
     }
+    
     .callout-wrapper { display: flex; gap: 40px; align-items: center; }
     .callout-text { flex: 1; }
+    .callout-server { display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .server-icon { height: 180px; width: auto; filter: var(--server-filter); opacity: 0.9; transition: filter 0.3s ease; }
     
     .warning-callout {
-      background: var(--warn-bg); color: var(--warn-text); padding: 20px 24px; 
-      border-radius: 16px; font-size: 14px; border: 1px solid var(--warn-border); transition: all 0.3s ease;
+      background: var(--warn-bg); color: var(--warn-text);
+      padding: 20px 24px; border-radius: 16px; font-size: 14px; line-height: 1.6;
+      border: 1px solid var(--warn-border); transition: all 0.3s ease;
     }
-    .warning-callout code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
-    body.light-theme .warning-callout code { background: rgba(255,255,255,0.5); }
+    .warning-callout code {
+      background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; font-family: "SF Mono", monospace;
+    }
+    body.light-theme .warning-callout code { background: rgba(255,255,255,0.6); }
 
     .step-block { 
       background: var(--bg-block); border-radius: 24px; margin-bottom: 20px;
-      border: 1px solid var(--block-border); box-shadow: var(--block-shadow); transition: all 0.3s ease; overflow: hidden;
+      border: 1px solid transparent; border: 1px solid var(--block-border); box-shadow: var(--block-shadow);
+      transition: all 0.3s ease; overflow: hidden;
     }
     .step-block:hover { border-color: var(--border); }
     .step-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; }
@@ -75,27 +107,28 @@
     .open .step-content-wrapper { grid-template-rows: 1fr; }
     .open .chevron { transform: rotate(180deg); color: var(--text-heading); }
     .open { border-color: var(--border); background: var(--open-bg); }
-    .step-content { padding: 0 32px 32px 32px; font-size: 15px; }
+    .step-content { padding: 0 32px 32px 32px; font-size: 15px; color: var(--text-main); }
     
     .step-num { background: var(--accent-bg); color: var(--accent-text); padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px; }
     .step-title { font-size: 18px; }
     
-    /* Новий стиль для рядка з IP */
     .ip-row {
       background: var(--bg-main); padding: 16px 20px; border-radius: 16px; margin: 16px 0; 
       display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); transition: all 0.3s ease;
     }
     .ip-col { display: flex; flex-direction: column; }
-    #user-ip { font-family: monospace; font-size: 26px; color: var(--text-heading); font-weight: 600; line-height: 1.2; }
+    #user-ip { font-family: "SF Mono", monospace; font-size: 26px; color: var(--text-heading); font-weight: 600; line-height: 1.2; }
     #user-details { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
     
     .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
     .btn:hover { background: var(--bg-hover); border-color: var(--text-muted); }
-    
-    .action-hint { font-size: 14px; color: var(--warn-text); background: var(--warn-bg); padding: 16px 20px; border-radius: 16px; margin-top: 16px; font-weight: 500; }
+    .btn-primary { background: var(--text-heading); color: var(--bg-main); border: 1px solid var(--text-heading); font-weight: 600; }
+    .btn-primary:hover { background: transparent; color: var(--text-heading); }
+
+    .action-hint { font-size: 14px; color: var(--warn-text); background: var(--warn-bg); padding: 16px 20px; border-radius: 16px; margin-top: 16px; font-weight: 500; border: 1px solid var(--warn-border); transition: all 0.3s ease; }
     
     .code-row { background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); transition: all 0.3s ease; }
-    code { color: var(--text-heading); font-family: monospace; font-size: 14px; }
+    code { color: var(--text-heading); font-family: "SF Mono", monospace; font-size: 14px; }
     
     .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; flex-shrink: 0; display: flex; align-items: center; transition: 0.2s; }
     .copy-mini:hover { color: var(--text-heading); border-color: var(--text-muted); background: var(--bg-hover); }
