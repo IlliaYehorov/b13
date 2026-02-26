@@ -26,7 +26,6 @@
       line-height: 1.6; padding: 40px 20px; display: flex; justify-content: center; margin: 0;
     }
     
-    /* Зробили десктопний дизайн значно ширшим */
     .container { 
       max-width: 800px; width: 100%; background: var(--card); 
       padding: 50px 60px; border-radius: 12px; border: 1px solid var(--border);
@@ -142,7 +141,7 @@
     <div class="step-title"><span class="step-num">1</span> Встановіть WireGuard</div>
     <p style="font-size: 15px; color: var(--text-muted);">Завантажте та встановіть офіційний клієнт. Програма доступна для будь-якої платформи: MacOS, Windows, iOS або Android.</p>
     <a href="https://www.wireguard.com/install/" target="_blank" class="btn">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/WireGuard_logo.svg" alt="WG" class="wg-logo">
+      <img src="https://www.svgrepo.com/download/520310/wireguard.svg" alt="WG" class="wg-logo">
       Завантажити WireGuard
     </a>
   </div>
@@ -153,7 +152,7 @@
     
     <div class="ip-box">
       <span id="user-ip">визначаємо...</span>
-      <span id="user-details">перевірка даних...</span>
+      <span id="user-details">запит до мережі...</span>
     </div>
 
     <button class="btn btn-primary" onclick="copyIp()">
@@ -226,22 +225,38 @@
 </div>
 
 <script>
-  // Використовуємо IPWhoIs для отримання провайдера (ISP) та локації
-  fetch('https://ipwho.is/')
-    .then(res => res.json())
-    .then(data => {
+  // РОЗУМНИЙ ФЕТЧ: Спроба 1 (ipinfo - детальна інфа), Спроба 2 (ipify - тільки IP якщо блокувальник лютує)
+  async function getIpData() {
+    try {
+      const response = await fetch('https://ipinfo.io/json');
+      if (!response.ok) throw new Error("ipinfo failed");
+      const data = await response.json();
+      
       document.getElementById('user-ip').innerText = data.ip;
       
-      const city = data.city || "Невідоме місто";
+      // Очищуємо назву провайдера від зайвого коду (наприклад "AS3326 Kyivstar" -> "Kyivstar")
+      const org = data.org ? data.org.replace(/AS\d+\s/, '') : "Невідомий провайдер";
+      const city = data.city || "Локація невідома";
       const country = data.country || "";
-      const isp = data.connection.isp || "Невідомий провайдер";
       
-      document.getElementById('user-details').innerText = `${city}, ${country} | Провайдер: ${isp}`;
-    })
-    .catch(err => {
-      document.getElementById('user-ip').innerText = "Помилка мережі";
-      document.getElementById('user-details').innerText = "Вимкніть активний VPN або AdBlock для визначення";
-    });
+      document.getElementById('user-details').innerText = `${city}, ${country} | Провайдер: ${org}`;
+      
+    } catch (error) {
+      // План Б: Якщо AdBlock заблокував ipinfo, беремо хоча б самі цифри IP з іншого ресурсу
+      try {
+        const fallbackRes = await fetch('https://api64.ipify.org?format=json');
+        const fallbackData = await fallbackRes.json();
+        document.getElementById('user-ip').innerText = fallbackData.ip;
+        document.getElementById('user-details').innerText = "Локацію приховано (працює антитрекер)";
+      } catch (fallbackError) {
+        document.getElementById('user-ip').innerText = "Помилка мережі";
+        document.getElementById('user-details').innerText = "Вимкніть VPN або AdBlock для визначення";
+      }
+    }
+  }
+
+  // Запускаємо функцію при завантаженні сторінки
+  getIpData();
 
   function copyIp() {
     const ip = document.getElementById('user-ip').innerText;
