@@ -9,190 +9,99 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root { 
-      /* Темна тема (За замовчуванням) */
-      --bg-main: #151515; 
-      --bg-block: #1d1d1d; 
-      --bg-hover: #262626;
-      --text-main: #d4d4d4; 
-      --text-muted: #8b8b8b;
-      --text-heading: #f4f4f4;
-      --border: #2a2a2a;
-      
-      --accent-text: #78a9c7;
-      --accent-bg: rgba(120, 169, 199, 0.15);
-      
-      --warn-text: #eab308;
-      --warn-bg: rgba(245, 158, 11, 0.08);
-      --warn-border: rgba(245, 158, 11, 0.15);
-      
-      --logo-filter: none;
+      --bg-main: #151515; --bg-block: #1d1d1d; --bg-hover: #262626;
+      --text-main: #d4d4d4; --text-muted: #8b8b8b; --text-heading: #f4f4f4;
+      --border: #2a2a2a; --accent-text: #78a9c7; --accent-bg: rgba(120, 169, 199, 0.15);
+      --warn-text: #eab308; --warn-bg: rgba(245, 158, 11, 0.08); --warn-border: rgba(245, 158, 11, 0.15);
+      --logo-filter: invert(0); 
       --server-filter: invert(1) brightness(100) contrast(100) drop-shadow(0 12px 24px rgba(0,0,0,0.6));
-      --open-bg: #1f1f1f;
+      --open-bg: #1f1f1f; --block-border: transparent; --block-shadow: none;
     }
-
-    /* Світла тема */
     body.light-theme {
-      --bg-main: #f3f4f6; 
-      --bg-block: #ffffff; 
-      --bg-hover: #e5e7eb;
-      --text-main: #4b5563; 
-      --text-muted: #6b7280;
-      --text-heading: #111827;
-      --border: #d1d5db;
-      
-      --accent-text: #0284c7;
-      --accent-bg: #e0f2fe;
-      
-      --warn-text: #b45309;
-      --warn-bg: #fef3c7;
-      --warn-border: #fde68a;
-      
-      /* Інвертуємо логотипи для світлої теми */
-      --logo-filter: invert(1) brightness(0.2);
+      --bg-main: #f3f4f6; --bg-block: #ffffff; --bg-hover: #e5e7eb;
+      --text-main: #4b5563; --text-muted: #6b7280; --text-heading: #111827;
+      --border: #d1d5db; --accent-text: #0284c7; --accent-bg: #e0f2fe;
+      --warn-text: #b45309; --warn-bg: #fef3c7; --warn-border: #fde68a;
+      --logo-filter: invert(1) brightness(0); 
       --server-filter: drop-shadow(0 12px 24px rgba(0,0,0,0.15));
-      --open-bg: #f9fafb;
+      --open-bg: #f9fafb; --block-border: #e5e7eb;
+      --block-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     }
-    
     * { box-sizing: border-box; }
-    
     body { 
       background: var(--bg-main); color: var(--text-main); 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-      line-height: 1.6; padding: 60px 20px; display: flex; justify-content: center; margin: 0;
-      -webkit-font-smoothing: antialiased; transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: 'Inter', sans-serif; line-height: 1.6; padding: 60px 20px; 
+      display: flex; justify-content: center; margin: 0; transition: all 0.3s ease;
     }
-    
     .container { max-width: 860px; width: 100%; }
-    
     h1, h2, h3, .heading-text { color: var(--text-heading); font-weight: 600; margin: 0; transition: color 0.3s ease; }
     
-    /* Шапка: Лого + Перемикач теми */
-    .header-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 50px; padding-left: 32px;
-    }
-    
-    .logo-container { text-align: left; }
-    .logo-container img { 
-      max-width: 180px; height: auto; opacity: 0.9; 
-      filter: var(--logo-filter); transition: filter 0.3s ease;
-    }
-
+    .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
+    .logo-container img { max-width: 180px; height: auto; filter: var(--logo-filter); transition: filter 0.3s ease; }
     .theme-toggle {
       background: transparent; border: 1px solid var(--border); border-radius: 100px;
       color: var(--text-muted); padding: 10px; cursor: pointer; transition: 0.2s ease;
-      display: flex; align-items: center; justify-content: center;
     }
     .theme-toggle:hover { color: var(--text-heading); background: var(--bg-hover); }
-    
-    /* Логіка іконок теми */
-    .icon-sun { display: none; }
-    .icon-moon { display: block; }
-    body.light-theme .icon-sun { display: block; }
-    body.light-theme .icon-moon { display: none; }
+    .icon-sun { display: none; } .icon-moon { display: block; }
+    body.light-theme .icon-sun { display: block; } body.light-theme .icon-moon { display: none; }
     
     .callout {
       background: var(--bg-block); padding: 32px; border-radius: 24px; margin-bottom: 40px; 
-      font-size: 15px; border: 1px solid transparent; transition: background-color 0.3s ease, border-color 0.3s ease;
+      border: 1px solid var(--block-border); box-shadow: var(--block-shadow); transition: all 0.3s ease;
     }
-    
     .callout-wrapper { display: flex; gap: 40px; align-items: center; }
     .callout-text { flex: 1; }
-    
-    .callout-server { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    
-    .server-icon {
-      height: 180px; width: auto; 
-      filter: var(--server-filter); opacity: 0.9; transition: filter 0.3s ease;
-    }
+    .server-icon { height: 180px; width: auto; filter: var(--server-filter); opacity: 0.9; transition: filter 0.3s ease; }
     
     .warning-callout {
-      background: var(--warn-bg); color: var(--warn-text);
-      padding: 20px 24px; border-radius: 16px; font-size: 14px; line-height: 1.6;
-      border: 1px solid var(--warn-border); transition: all 0.3s ease;
+      background: var(--warn-bg); color: var(--warn-text); padding: 20px 24px; 
+      border-radius: 16px; font-size: 14px; border: 1px solid var(--warn-border); transition: all 0.3s ease;
     }
-    .warning-callout code {
-      background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-family: "SF Mono", ui-monospace, monospace;
-    }
+    .warning-callout code { background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
     body.light-theme .warning-callout code { background: rgba(255,255,255,0.5); }
 
     .step-block { 
       background: var(--bg-block); border-radius: 24px; margin-bottom: 20px;
-      border: 1px solid transparent; transition: all 0.3s ease;
-      overflow: hidden;
+      border: 1px solid var(--block-border); box-shadow: var(--block-shadow); transition: all 0.3s ease; overflow: hidden;
     }
     .step-block:hover { border-color: var(--border); }
-
-    .step-header { 
-      display: flex; align-items: center; justify-content: space-between; 
-      padding: 24px 32px; cursor: pointer; user-select: none;
-    }
+    .step-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; }
     .step-header-left { display: flex; align-items: center; }
-
-    .chevron { width: 20px; height: 20px; color: var(--text-muted); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .chevron { width: 20px; height: 20px; color: var(--text-muted); transition: transform 0.3s ease; }
     
-    .step-content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .step-content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
     .step-content-inner { overflow: hidden; }
-    
     .open .step-content-wrapper { grid-template-rows: 1fr; }
     .open .chevron { transform: rotate(180deg); color: var(--text-heading); }
     .open { border-color: var(--border); background: var(--open-bg); }
-
-    .step-content { padding: 0 32px 32px 32px; font-size: 15px; color: var(--text-main); }
+    .step-content { padding: 0 32px 32px 32px; font-size: 15px; }
     
-    .step-num {
-      background: var(--accent-bg); color: var(--accent-text); 
-      padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px;
-      letter-spacing: 0.5px; transition: all 0.3s ease;
-    }
-    
+    .step-num { background: var(--accent-bg); color: var(--accent-text); padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px; }
     .step-title { font-size: 18px; }
     
-    .ip-box { padding: 12px 0; margin: 16px 0; }
-    #user-ip { 
-      font-family: "SF Mono", ui-monospace, monospace; font-size: 32px; 
-      color: var(--text-heading); font-weight: 500; display: block; margin-bottom: 4px; letter-spacing: 0.5px;
+    /* Новий стиль для рядка з IP */
+    .ip-row {
+      background: var(--bg-main); padding: 16px 20px; border-radius: 16px; margin: 16px 0; 
+      display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); transition: all 0.3s ease;
     }
-    #user-details { font-size: 14px; color: var(--text-muted); }
+    .ip-col { display: flex; flex-direction: column; }
+    #user-ip { font-family: monospace; font-size: 26px; color: var(--text-heading); font-weight: 600; line-height: 1.2; }
+    #user-details { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
     
-    .btn { 
-      background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); 
-      padding: 14px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; 
-      display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px;
-    }
+    .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
     .btn:hover { background: var(--bg-hover); border-color: var(--text-muted); }
     
-    .btn-primary { 
-      background: var(--text-heading); color: var(--bg-main); border: 1px solid var(--text-heading); font-weight: 600;
-    }
-    .btn-primary:hover { 
-      background: transparent; color: var(--text-heading); 
-    }
-
-    .action-hint {
-      font-size: 14px; color: var(--warn-text); background: var(--warn-bg); 
-      padding: 16px 20px; border-radius: 16px; margin-top: 24px; font-weight: 500; transition: all 0.3s ease;
-    }
-
-    .code-row { 
-      background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin-top: 12px; 
-      display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border);
-      transition: all 0.3s ease;
-    }
-    code { color: var(--text-heading); font-family: "SF Mono", ui-monospace, monospace; font-size: 14px; }
+    .action-hint { font-size: 14px; color: var(--warn-text); background: var(--warn-bg); padding: 16px 20px; border-radius: 16px; margin-top: 16px; font-weight: 500; }
     
-    .copy-mini { 
-      background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; 
-      border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; flex-shrink: 0; 
-      display: flex; align-items: center; transition: 0.2s;
-    }
+    .code-row { background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); transition: all 0.3s ease; }
+    code { color: var(--text-heading); font-family: monospace; font-size: 14px; }
+    
+    .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; margin-left: 16px; flex-shrink: 0; display: flex; align-items: center; transition: 0.2s; }
     .copy-mini:hover { color: var(--text-heading); border-color: var(--text-muted); background: var(--bg-hover); }
     .copy-icon { width: 14px; height: 14px; margin-right: 6px; }
     
-    ul { padding-left: 20px; margin-top: 16px; color: var(--text-main); }
-    li { margin-bottom: 10px; }
-    b { color: var(--text-heading); font-weight: 600; }
-    
+    ul { padding-left: 20px; margin-top: 16px; } li { margin-bottom: 10px; } b { color: var(--text-heading); }
     .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; transition: color 0.2s; }
     .app-link:hover { color: var(--text-heading); text-decoration: underline; }
 
@@ -201,13 +110,10 @@
       .header-row { padding-left: 24px; margin-bottom: 40px; }
       .step-block, .callout { border-radius: 20px; }
       .callout-wrapper { flex-direction: column-reverse; gap: 24px; align-items: flex-start; }
-      .callout-server { align-self: center; margin-bottom: 0; }
-      .step-header { padding: 20px 24px; }
-      .step-content { padding: 0 24px 24px 24px; }
-      .code-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .step-header { padding: 20px 24px; } .step-content { padding: 0 24px 24px 24px; }
+      .code-row, .ip-row { flex-direction: column; align-items: flex-start; gap: 16px; }
       .copy-mini { margin-left: 0; width: 100%; justify-content: center; }
-      #user-ip { font-size: 26px; }
-      .server-icon { height: 120px; }
+      #user-ip { font-size: 24px; } .server-icon { height: 120px; }
     }
   </style>
 </head>
@@ -219,7 +125,6 @@
     <div class="logo-container">
       <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" alt="Babylon13">
     </div>
-    
     <button class="theme-toggle" id="theme-btn" title="Змінити тему">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -229,12 +134,11 @@
   <div class="callout">
     <div class="callout-wrapper">
       <div class="callout-text">
-        <div class="heading-text" style="font-size: 20px; margin-bottom: 16px; line-height: 1.4;">Інструкція по віддаленому користуванню офісним сервером B13-QNAP-1688</div>
-        <p style="margin-top: 0; margin-bottom: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби знаходитесь в локальній мережі офісу, але з обмеженнями по швидкості інтернету та шифрування. Підключення дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої матеріали чи викачувати їх для локального монтажу.</p>
+        <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по віддаленому користуванню офісним сервером B13-QNAP-1688</div>
+        <p style="margin: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби знаходитесь в локальній мережі офісу, але з обмеженнями по швидкості інтернету та шифрування. Підключення дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої матеріали чи викачувати їх для локального монтажу.</p>
       </div>
-      
       <div class="callout-server">
-        <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP TVS-h1688X">
+        <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP">
       </div>
     </div>
 
@@ -243,7 +147,7 @@
       <ul style="margin-top: 8px; margin-bottom: 0; color: inherit;">
         <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте обережні.</li>
         <li>Розміщуйте свої проекти не в головній (кореневій) папці диску, а в папках відповідного року.</li>
-        <li>Називайте папки своїх проектів та матеріалів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>, наприклад: <code>1979-05-19_Apocalypse-Now_F-Coppola</code>.</li>
+        <li>Називайте папки своїх проектів та матеріалів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code> (наприклад: <code>1979-05-19_Apocalypse-Now_F-Coppola</code>).</li>
         <li>Коли VPN увімкнено, увесь ваш трафік іде через офіс. Швидкість вашого інтернету падатиме в 2-3 рази за використання цього підключення. Після роботи одразу вимикайте тунель WireGuard.</li>
       </ul>
     </div>
@@ -251,20 +155,15 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left">
-        <span class="step-num">Крок 1</span>
-        <span class="heading-text step-title">Встановлення клієнта</span>
-      </div>
+      <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення клієнта</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
           <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android і працює у фоні.</p>
           <a href="https://www.wireguard.com/install/" target="_blank" class="btn" style="margin-top: 8px;">
-            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 8px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            Завантажити WireGuard
+            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Завантажити WireGuard
           </a>
         </div>
       </div>
@@ -273,31 +172,25 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left">
-        <span class="step-num">Крок 2</span>
-        <span class="heading-text step-title">Авторизація мережі</span>
-      </div>
+      <div class="step-header-left"><span class="step-num">Крок 2</span><span class="heading-text step-title">Авторизація мережі</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
           <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. <b>Прийдіть додому чи в те місце, з якого плануєте працювати з файлами, та підключіться до Wi-Fi чи кабелю.</b> Не використовуйте тимчасові місця перебування, публічні Wi-Fi тощо. Скопіюйте свій IP нижче:</p>
           
-          <div class="ip-box">
-            <span id="user-ip">...</span>
-            <span id="user-details">перевірка локації...</span>
+          <div class="ip-row">
+            <div class="ip-col">
+              <span id="user-ip">...</span>
+              <span id="user-details">перевірка локації...</span>
+            </div>
+            <button class="copy-mini" style="padding: 12px 20px; font-size: 14px;" onclick="copyIp()">
+              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Скопіювати
+            </button>
           </div>
-
-          <button class="btn btn-primary" onclick="copyIp()">
-            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: inherit;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            Скопіювати мій домашній IP
-          </button>
           
-          <div class="action-hint">
-            Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard. Це буде ваш цифровий ключ до сервера.
-          </div>
+          <div class="action-hint">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard. Це буде ваш цифровий ключ до сервера.</div>
         </div>
       </div>
     </div>
@@ -305,13 +198,9 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left">
-        <span class="step-num">Крок 3</span>
-        <span class="heading-text step-title">Підключення</span>
-      </div>
+      <div class="step-header-left"><span class="step-num">Крок 3</span><span class="heading-text step-title">Підключення</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
@@ -328,13 +217,9 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left">
-        <span class="step-num">Крок 4</span>
-        <span class="heading-text step-title">Робота з сервером</span>
-      </div>
+      <div class="step-header-left"><span class="step-num">Крок 4</span><span class="heading-text step-title">Робота з сервером</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
@@ -367,17 +252,13 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
-      <div class="step-header-left">
-        <span class="step-num">Крок 5</span>
-        <span class="heading-text step-title">Відключення</span>
-      </div>
+      <div class="step-header-left"><span class="step-num">Крок 5</span><span class="heading-text step-title">Відключення</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0; margin-bottom: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>).</p>
+          <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>).</p>
         </div>
       </div>
     </div>
@@ -385,19 +266,13 @@
 
   <div class="step-block open" onclick="this.classList.toggle('open')" style="margin-bottom: 0;">
     <div class="step-header">
-      <div class="step-header-left">
-        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span>
-        <span class="heading-text step-title">Можливі проблеми</span>
-      </div>
+      <div class="step-header-left"><span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span><span class="heading-text step-title">Можливі проблеми</span></div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0; margin-bottom: 0;">
-            Якщо з'єднання немає, то або в офісі зараз відсутнє світло чи інтернет, або виникли проблеми з вашим домашнім провайдером. Перевірте з'єднання пізніше, і якщо нічого не виходить — напишіть Іллі.
-          </p>
+          <p style="margin: 0;">Якщо з'єднання немає, то або в офісі зараз відсутнє світло чи інтернет, або виникли проблеми з вашим домашнім провайдером. Перевірте з'єднання пізніше, і якщо нічого не виходить — напишіть Іллі.</p>
         </div>
       </div>
     </div>
@@ -406,35 +281,19 @@
 </div>
 
 <script>
-  // Логіка перемикання теми
   const themeBtn = document.getElementById('theme-btn');
-  const currentTheme = localStorage.getItem('theme');
-  
-  if (currentTheme === 'light') {
-    document.body.classList.add('light-theme');
-  }
-
+  if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
   themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('light-theme');
-    let theme = 'dark';
-    if (document.body.classList.contains('light-theme')) {
-      theme = 'light';
-    }
-    localStorage.setItem('theme', theme);
+    localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
   });
 
-  // Логіка отримання IP
   async function getIpData() {
     try {
       const response = await fetch('https://ipinfo.io/json');
       const data = await response.json();
-      
       document.getElementById('user-ip').innerText = data.ip;
-      const city = data.city || "Локація невідома";
-      const country = data.country || "";
-      
-      document.getElementById('user-details').innerText = `${city}, ${country}`;
-      
+      document.getElementById('user-details').innerText = `${data.city || "Локація невідома"}, ${data.country || ""}`;
     } catch (error) {
       try {
         const fallbackRes = await fetch('https://api64.ipify.org?format=json');
@@ -447,24 +306,21 @@
       }
     }
   }
-
   getIpData();
 
   function copyIp() {
     const ip = document.getElementById('user-ip').innerText;
-    
     if(ip && ip !== "..." && ip !== "Помилка мережі") {
       navigator.clipboard.writeText(ip);
-      
       const btn = event.currentTarget;
       const originalHTML = btn.innerHTML;
-      
       btn.innerHTML = `СКОПІЙОВАНО!`;
-      btn.style.opacity = "0.7";
-      
+      btn.style.color = "var(--text-heading)";
+      btn.style.background = "var(--bg-hover)";
       setTimeout(() => { 
         btn.innerHTML = originalHTML; 
-        btn.style.opacity = "1";
+        btn.style.color = "var(--text-muted)";
+        btn.style.background = "transparent";
       }, 2000);
     }
   }
@@ -472,14 +328,11 @@
   function copyText(id) {
     const text = document.getElementById(id).innerText;
     navigator.clipboard.writeText(text);
-    
     const btn = event.currentTarget;
     const originalHTML = btn.innerHTML;
-    
     btn.innerHTML = `Готово`;
     btn.style.color = "var(--text-heading)";
     btn.style.background = "var(--bg-hover)";
-    
     setTimeout(() => { 
       btn.innerHTML = originalHTML;
       btn.style.color = "var(--text-muted)";
