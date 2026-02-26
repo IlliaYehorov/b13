@@ -41,24 +41,35 @@
     
     h1, h2, h3, .heading-text { color: var(--text-heading); font-weight: 600; margin: 0; }
     
-    .logo-container { margin-bottom: 60px; text-align: center; }
+    .logo-container { margin-bottom: 50px; text-align: left; }
     .logo-container img { max-width: 180px; height: auto; opacity: 0.9; }
     
     .callout {
-      background: var(--bg-block); padding: 28px 32px; border-radius: 24px; margin-bottom: 40px; 
-      font-size: 15px;
+      background: var(--bg-block); padding: 32px; border-radius: 24px; margin-bottom: 40px; 
+      font-size: 15px; border: 1px solid transparent;
     }
     
-    .callout-header {
-      display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;
+    .callout-wrapper {
+      display: flex; gap: 32px; align-items: center;
+    }
+    
+    .callout-text { flex: 1; }
+    
+    .callout-server {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-width: 140px;
     }
     
     .server-icon {
-      height: 64px; width: auto; 
-      /* Магія CSS: інвертуємо кольори (чорний -> білий) і робимо білий фон прозорим */
+      height: 90px; width: auto; 
+      /* Інверсія та прозорість для чорної іконки на темному фоні */
       filter: invert(1) brightness(100) contrast(100) drop-shadow(0 8px 16px rgba(0,0,0,0.6));
-      opacity: 0.85; 
-      margin-top: -8px; margin-right: -8px;
+      opacity: 0.9; 
+    }
+    
+    .server-name {
+      margin-top: 16px; font-family: "SF Mono", ui-monospace, monospace; 
+      font-size: 13px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px;
     }
 
     .critical-warning {
@@ -72,15 +83,12 @@
     }
 
     /* Стилі для згортання (Акордеон) */
-    .step-block, .faq-block { 
+    .step-block { 
       background: var(--bg-block); border-radius: 24px; margin-bottom: 20px;
       border: 1px solid transparent; transition: border-color 0.2s ease, background-color 0.2s ease;
       overflow: hidden;
     }
-    .step-block:hover, .faq-block:hover { border-color: var(--border); }
-    
-    .faq-block { background: var(--warn-bg); border-color: var(--warn-border); margin-top: 40px; }
-    .faq-block:hover { border-color: rgba(245, 158, 11, 0.3); }
+    .step-block:hover { border-color: var(--border); }
 
     .step-header { 
       display: flex; align-items: center; justify-content: space-between; 
@@ -103,7 +111,6 @@
     .open .step-content-wrapper { grid-template-rows: 1fr; }
     .open .chevron { transform: rotate(180deg); color: var(--text-heading); }
     .open { border-color: var(--border); background: #1f1f1f; }
-    .faq-block.open { border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1); }
 
     .step-content { padding: 0 32px 32px 32px; font-size: 15px; color: var(--text-main); }
     
@@ -159,13 +166,15 @@
 
     @media (max-width: 768px) {
       body { padding: 40px 15px; }
-      .step-block, .callout, .faq-block { border-radius: 20px; }
+      .step-block, .callout { border-radius: 20px; }
+      .callout-wrapper { flex-direction: column-reverse; gap: 24px; align-items: flex-start; }
+      .callout-server { align-self: center; margin-bottom: 16px; }
       .step-header { padding: 20px 24px; }
       .step-content { padding: 0 24px 24px 24px; }
       .code-row { flex-direction: column; align-items: flex-start; gap: 16px; }
       .copy-mini { margin-left: 0; width: 100%; justify-content: center; }
       #user-ip { font-size: 26px; }
-      .server-icon { height: 50px; } /* Трохи менше лого на телефонах */
+      .server-icon { height: 75px; }
     }
   </style>
 </head>
@@ -178,21 +187,27 @@
   </div>
 
   <div class="callout">
-    <div class="callout-header">
-      <div class="heading-text" style="font-size: 16px;">Привіт, колеги 👋</div>
-      <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP TVS-h1688X">
-    </div>
-    Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби фізично сидите у студії. Це дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої рендери або забирати файли для локального монтажу.
-    
-    <div class="critical-warning">
-      <b>Важливо:</b> Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте дуже обережні.
+    <div class="callout-wrapper">
+      <div class="callout-text">
+        <div class="heading-text" style="font-size: 22px; margin-bottom: 16px;">Інструкція по віддаленому користуванню офісним сервером</div>
+        <p style="margin-top: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби фізично сидите у студії. Це дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої рендери або забирати файли для локального монтажу.</p>
+        
+        <div class="critical-warning" style="margin-bottom: 0;">
+          <b>Важливо:</b> Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте дуже обережні.
+        </div>
+      </div>
+      
+      <div class="callout-server">
+        <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP TVS-h1688X">
+        <span class="server-name">B13-QNAP-1688</span>
+      </div>
     </div>
   </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
+  <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num">Крок 01</span>
+        <span class="step-num">Крок 1</span>
         <span class="heading-text step-title">Встановлення клієнта</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -211,10 +226,10 @@
     </div>
   </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
+  <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num">Крок 02</span>
+        <span class="step-num">Крок 2</span>
         <span class="heading-text step-title">Авторизація мережі</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -243,10 +258,10 @@
     </div>
   </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
+  <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num">Крок 03</span>
+        <span class="step-num">Крок 3</span>
         <span class="heading-text step-title">Підключення</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -266,10 +281,10 @@
     </div>
   </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
+  <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num">Крок 04</span>
+        <span class="step-num">Крок 4</span>
         <span class="heading-text step-title">Робота з сервером</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -299,10 +314,10 @@
     </div>
   </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
+  <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">Крок 05</span>
+        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">Крок 5</span>
         <span class="heading-text step-title">Відключення</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -319,16 +334,19 @@
     </div>
   </div>
 
-  <div class="faq-block" onclick="this.classList.toggle('open')">
-    <div class="step-header" style="padding: 0; margin-bottom: 0;">
-      <div class="heading-text step-title" style="color: #fbbf24; font-size: 16px;">Можливі проблеми</div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="#fbbf24" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  <div class="step-block open" onclick="this.classList.toggle('open')" style="margin-bottom: 0;">
+    <div class="step-header">
+      <div class="step-header-left">
+        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">Крок 6</span>
+        <span class="heading-text step-title">Можливі проблеми</span>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     
     <div class="step-content-wrapper">
       <div class="step-content-inner">
-        <div class="step-content" onclick="event.stopPropagation();" style="padding: 16px 0 0 0; color: #d1d5db;">
-          <p style="margin: 0;">
+        <div class="step-content" onclick="event.stopPropagation();">
+          <p style="margin-top: 0;">
             Якщо з'єднання немає, то або в офісі зараз відсутнє світло чи інтернет, або виникли проблеми з вашим домашнім провайдером. Перевірте з'єднання пізніше, і якщо нічого не виходить — напишіть Іллі.
           </p>
         </div>
