@@ -1,272 +1,797 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Babylon13 | Доступ до сервера</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root { 
-      --bg-main: #151515; --bg-block: #1d1d1d; --bg-hover: #262626;
-      --text-main: #d4d4d4; --text-muted: #8b8b8b; --text-heading: #f4f4f4;
-      --border: #2a2a2a; --accent-text: #78a9c7; --accent-bg: rgba(120, 169, 199, 0.15);
-      --warn-text: #eab308; --warn-bg: rgba(245, 158, 11, 0.08); --warn-border: #eab308;
-      --server-filter: invert(1) brightness(100) contrast(100) drop-shadow(0 12px 24px rgba(0,0,0,0.6));
-      --open-bg: #1f1f1f; --block-border: transparent;
-      --accent-blue: #3b82f6;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Babylon13 | Доступ до сервера</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Темна тема */
+            --bg-main: #151515;
+            --bg-block: #1d1d1d;
+            --bg-hover: #262626;
+            --text-main: #d4d4d4;
+            --text-muted: #8b8b8b;
+            --text-heading: #f4f4f4;
+            --border: #2a2a2a;
+            --accent-text: #78a9c7;
+            --accent-bg: rgba(120, 169, 199, 0.15);
+            --warn-text: #eab308;
+            --warn-bg: rgba(245, 158, 11, 0.08);
+            --warn-border: #eab308;
 
-    body.light-theme {
-      --bg-main: #EBE8E0; --bg-block: #F4F3EF; --bg-hover: #E2E0D8; 
-      --text-main: #4B4945; --text-muted: #7E7B74; --text-heading: #23211F; 
-      --border: #DFDBD0; --accent-text: #2D6B66; --accent-bg: #E1EBEA; 
-      --warn-text: #8C6314; --warn-bg: var(--bg-block); --warn-border: #D97706; 
-      --server-filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); 
-      --open-bg: var(--bg-block); --block-border: #DFDBD0;
-      --accent-blue: #2563eb;
-    }
+            --server-filter: invert(1) brightness(100) contrast(100) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.6));
+            --open-bg: #1f1f1f;
+            --block-border: transparent;
+            --accent-blue: #3b82f6;
+        }
 
-    * { box-sizing: border-box; }
-    body { 
-      background: var(--bg-main); color: var(--text-main); 
-      font-family: 'Inter', sans-serif; line-height: 1.6; padding: 60px 20px; 
-      display: flex; justify-content: center; margin: 0;
-      -webkit-font-smoothing: antialiased; transition: background-color 0.3s ease;
-    }
-    
-    .container { max-width: 860px; width: 100%; }
-    h1, h2, h3, .heading-text { color: var(--text-heading); font-weight: 600; margin: 0; }
-    
-    .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
-    .logo-container img { display: block; width: 180px; height: auto; opacity: 0.9; }
-    .logo-white { display: block !important; } .logo-black { display: none !important; }
-    body.light-theme .logo-white { display: none !important; }
-    body.light-theme .logo-black { display: block !important; opacity: 0.85; }
+        /* Світла тема: Матова естетика Claude */
+        body.light-theme {
+            --bg-main: #EBE8E0;
+            --bg-block: #F4F3EF;
+            --bg-hover: #E2E0D8;
+            --text-main: #4B4945;
+            --text-muted: #7E7B74;
+            --text-heading: #23211F;
+            --border: #DFDBD0;
+            --accent-text: #2D6B66;
+            --accent-bg: #E1EBEA;
+            --warn-text: #8C6314;
+            --warn-bg: var(--bg-block);
+            --warn-border: #D97706;
+            --server-filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.06));
+            --open-bg: var(--bg-block);
+            --block-border: #DFDBD0;
+            --accent-blue: #2563eb;
+        }
 
-    .theme-toggle {
-      background: transparent; border: 1px solid var(--border); border-radius: 100px;
-      color: var(--text-muted); padding: 10px; cursor: pointer; display: flex;
-    }
-    .theme-toggle:hover { color: var(--text-heading); background: var(--bg-hover); }
-    .icon-sun { display: none; } body.light-theme .icon-sun { display: block; } body.light-theme .icon-moon { display: none; }
-    
-    .callout {
-      background: var(--bg-block); padding: 32px; border-radius: 24px; margin-bottom: 40px; 
-      font-size: 15px; border: 1px solid var(--block-border);
-    }
-    .callout-wrapper { display: flex; gap: 40px; align-items: center; }
-    .server-icon { height: 180px; width: auto; filter: var(--server-filter); opacity: 0.9; }
-    
-    .warning-callout {
-      background: var(--warn-bg); color: var(--warn-text);
-      padding: 20px 24px; border-radius: 16px; font-size: 14px; border: 1px solid var(--warn-border);
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .step-block { 
-      background: var(--bg-block); border-radius: 24px; margin-bottom: 20px;
-      border: 1px solid var(--block-border); overflow: hidden; transition: 0.3s ease;
-    }
-    .step-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; }
-    .chevron { width: 20px; height: 20px; color: var(--text-muted); transition: 0.3s; }
-    .open .chevron { transform: rotate(180deg); color: var(--text-heading); }
-    .open { border-color: var(--border); background: var(--open-bg); }
-    
-    .step-content-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease; }
-    .open .step-content-wrapper { grid-template-rows: 1fr; }
-    .step-content { padding: 0 32px 32px 32px; font-size: 15px; }
-    
-    .step-num { background: var(--accent-bg); color: var(--accent-text); padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px; }
-    .step-title { font-size: 18px; }
-    
-    .ip-row { padding: 24px 0; margin: 16px 0; display: flex; align-items: center; justify-content: space-between; }
-    .ip-value { font-family: monospace; font-size: 24px; color: var(--text-heading); font-weight: 600; flex: 1; text-align: center; }
-    .ip-location { display: flex; flex-direction: column; min-width: 140px; padding-left: 24px; border-left: 1px solid var(--border); }
+        body {
+            background: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
 
-    .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; font-size: 14px; transition: 0.2s; }
-    .btn:hover { background: var(--bg-hover); }
-    .btn-ip { border: 1.5px solid var(--accent-blue); }
+        .container {
+            max-width: 860px;
+            width: 100%;
+        }
 
-    .code-row { background: var(--bg-main); padding: 14px 20px; border-radius: 16px; margin: 16px 0; display: flex; align-items: center; border: 1px solid var(--border); gap: 16px; }
-    code { color: var(--text-heading); font-family: monospace; font-size: 14px; }
-    
-    .copy-mini { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
-    .copy-mini:hover { color: var(--text-heading); border-color: var(--text-muted); background: var(--bg-hover); }
-    
-    ul { padding-left: 20px; margin-top: 16px; } li { margin-bottom: 10px; }
-    .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; }
+        h1,
+        h2,
+        h3,
+        .heading-text {
+            color: var(--text-heading);
+            font-weight: 600;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
 
-    @media (max-width: 768px) {
-      .ip-row { flex-direction: column; gap: 20px; }
-      .ip-location { border-left: none; border-top: 1px solid var(--border); padding: 16px 0 0 0; width: 100%; align-items: center; }
-      .code-row { flex-direction: column; align-items: stretch; }
-      .copy-mini { width: 100%; text-align: center; }
-    }
-  </style>
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            padding-left: 32px;
+        }
+
+        .logo-link {
+            display: block;
+            transition: opacity 0.2s ease;
+            text-decoration: none;
+        }
+
+        .logo-link:hover {
+            opacity: 0.7 !important;
+        }
+
+        .logo-container img {
+            display: block;
+            width: 180px;
+            height: auto;
+            opacity: 0.9;
+        }
+
+        .logo-white {
+            display: block !important;
+        }
+
+        .logo-black {
+            display: none !important;
+        }
+
+        body.light-theme .logo-white {
+            display: none !important;
+        }
+
+        body.light-theme .logo-black {
+            display: block !important;
+            opacity: 0.85;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-muted);
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-heading);
+            background: var(--bg-hover);
+        }
+
+        .icon-sun {
+            display: none;
+        }
+
+        .icon-moon {
+            display: block;
+        }
+
+        body.light-theme .icon-sun {
+            display: block;
+        }
+
+        body.light-theme .icon-moon {
+            display: none;
+        }
+
+        .callout {
+            background: var(--bg-block);
+            padding: 32px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            font-size: 15px;
+            border: 1px solid var(--block-border);
+            transition: all 0.3s ease;
+        }
+
+        .callout-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .callout-text {
+            flex: 1;
+        }
+
+        .server-icon {
+            height: 180px;
+            width: auto;
+            filter: var(--server-filter);
+            opacity: 0.9;
+            transition: filter 0.3s ease;
+        }
+
+        .warning-callout {
+            background: var(--warn-bg);
+            color: var(--warn-text);
+            padding: 20px 24px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 1px solid var(--warn-border);
+            transition: all 0.3s ease;
+        }
+
+        .warning-callout code {
+            background: rgba(0, 0, 0, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .step-block {
+            background: var(--bg-block);
+            border-radius: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--block-border);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 32px;
+            cursor: pointer;
+        }
+
+        .step-header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .chevron {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .step-content-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .open .step-content-wrapper {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .open .chevron {
+            transform: rotate(180deg);
+            color: var(--text-heading);
+        }
+
+        .open {
+            border-color: var(--border);
+            background: var(--open-bg);
+        }
+
+        .step-content {
+            padding: 0 32px 32px 32px;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+
+        .step-num {
+            background: var(--accent-bg);
+            color: var(--accent-text);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 16px;
+        }
+
+        .step-title {
+            font-size: 18px;
+        }
+
+        .ip-row {
+            padding: 16px 0;
+            margin: 16px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ip-value {
+            font-family: monospace;
+            font-size: 24px;
+            color: var(--text-heading);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 20px;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .ip-value:hover {
+            border-color: var(--text-heading);
+            background: var(--bg-hover);
+        }
+
+        .ip-location {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 6px;
+        }
+
+        #user-city {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        #user-country {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn {
+            background: var(--bg-main);
+            color: var(--text-heading);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .btn-ip {
+            background: var(--bg-main);
+            color: var(--text-heading);
+            border: 1.5px solid var(--accent-blue);
+        }
+
+        .btn-accent {
+            background: var(--accent-blue);
+            color: #ffffff;
+            border: 1px solid var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .btn-accent:hover {
+            filter: brightness(1.1);
+        }
+
+        .code-row {
+            padding: 8px 20px;
+            border-radius: 14px;
+            margin: 12px 0;
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid transparent;
+            gap: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.2s ease;
+            font-family: monospace;
+            font-size: 24px;
+            color: var(--text-heading);
+            font-weight: 600;
+        }
+
+        .code-row:hover {
+            border-color: var(--text-heading);
+            background: var(--bg-hover);
+        }
+
+        .code-row code {
+            font-size: inherit;
+            color: inherit;
+        }
+
+        code {
+            color: var(--text-heading);
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .copy-mini {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: 16px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-mini:hover {
+            color: var(--text-heading);
+            border-color: var(--text-muted);
+            background: var(--bg-hover);
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-top: 16px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .app-link {
+            color: var(--accent-text);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: 0.2s;
+        }
+
+        .app-link:hover {
+            border-bottom-color: var(--accent-text);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 40px 15px;
+            }
+
+            .header-row {
+                padding-left: 24px;
+            }
+
+            .callout-wrapper {
+                flex-direction: column-reverse;
+                gap: 24px;
+            }
+
+            .ip-row {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .ip-location {
+                border-left: none;
+                border-top: 1px solid var(--border);
+                padding-left: 0;
+                padding-top: 16px;
+                width: 100%;
+                align-items: center;
+            }
+
+
+            .copy-mini {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="container">
-  
-  <div class="header-row">
-    <div class="logo-container">
-      <a href="https://babylon13.org.ua/" target="_blank" class="logo-link">
-        <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg" class="logo-white" alt="B13">
-        <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg" class="logo-black" alt="B13">
-      </a>
-    </div>
-    <button class="theme-toggle" id="theme-btn">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    </button>
-  </div>
+    <div class="container">
 
-  <div class="callout">
-    <div class="callout-wrapper">
-      <div class="callout-text">
-        <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по користуванню офісним сервером B13-QNAP-1688</div>
-        <p style="margin: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. Підключення дозволить вам переглядати, викачувати чи завантажувати свої матеріали напряму на сервер. Монтувати напряму з файлів на сервері не вийде через обмежену швидкість інтернету.</p>
-      </div>
-      <div class="callout-server"><img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP"></div>
-    </div>
-
-<div class="warning-callout" style="margin-top: 32px;">
-      <b>Важливо:</b>
-      <ul style="margin-top: 8px; margin-bottom: 0;">
-        <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди.</li>
-        <li>Розміщуйте свої проекти не в головній (кореневій) папці диску, а в папках відповідного року.</li>
-        <li>Називайте папки своїх проектів та матеріалів у форматі <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>, наприклад <code>1979-05-19_Apocalypse-Now_F-Coppola</code>.</li>
-        <li>Коли VPN увімкнено, швидкість вашого інтернету може падати. Після роботи одразу вимикайте тунель WireGuard.</li>
-      </ul>
-    </div>
-  </div>
-
-<div class="step-block" onclick="this.classList.toggle('open')">
-    <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 1</span><span class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для MacOS, Windows, iOS або Android.</p>
-      <a href="https://www.wireguard.com/install/" target="_blank" class="btn" style="margin-top: 8px;">Завантажити WireGuard</a>
-    </div></div>
-  </div>
-
-<div class="step-block open" onclick="this.classList.toggle('open')">
-    <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 2</span><span class="heading-text step-title">Авторизація вашого IP</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. Прийдіть додому, підключіться до Wi-Fi чи по кабелю та скопіюйте свій IP нижче. Не використовуйте для цього тимчасові місця перебування чи публічні Wi-Fi.</p>
-      
-      <div class="ip-row">
-        <div class="ip-btn-wrapper">
-          <button class="btn btn-ip" id="copy-btn-ip" onclick="copyIp()">Скопіювати мій IP</button>
+        <div class="header-row">
+            <div class="logo-container">
+                <a href="https://babylon13.org.ua/" target="_blank" class="logo-link">
+                    <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_white.svg"
+                        alt="Логотип Babylon13" class="logo-white">
+                    <img src="https://babylon13.org.ua/wp-content/uploads/2025/06/babylon13_logo_black.svg"
+                        alt="Логотип Babylon13" class="logo-black">
+                </a>
+            </div>
+            <button class="theme-toggle" id="theme-btn">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="width: 20px; height: 20px;">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="width: 20px; height: 20px;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
         </div>
-        <div class="ip-value" id="user-ip">...</div>
-        <div class="ip-location">
-          <span id="user-city">Перевірка...</span>
-          <span id="user-country"></span>
+
+        <div class="callout">
+            <div class="callout-wrapper">
+                <div class="callout-text">
+                    <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по користуванню
+                        офісним сервером B13-QNAP-1688</div>
+                    <p style="margin: 0;">Ви можете користуватись робочими файлами з офісного сервера на своєму домашньому
+                        Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. Підключення дозволить вам
+                        переглядати, викачувати чи завантажувати свої матеріали напряму на сервер. Монтувати напряму з
+                        файлів на сервері не вийде через обмежену швидкість інтернету.</p>
+                </div>
+                <div class="callout-server">
+                    <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000"
+                        class="server-icon" alt="QNAP">
+                </div>
+            </div>
+
+            <div class="warning-callout" style="margin-top: 32px;">
+                <b>Важливо:</b>
+                <ul style="margin-top: 8px; margin-bottom: 0;">
+                    <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у
+                        Finder чи Провіднику, він назавжди видалиться з сервера для всіх.</li>
+                    <li>Розміщуйте свої проекти не в кореневій папці диску, а в папках відповідного року.
+                    </li>
+                    <li>Називайте папки своїх проектів та матеріалів у форматі
+                        <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>, наприклад
+                        <code>1979-05-19_Apocalypse-Now_F-Coppola</code>.</li>
+                    <li>Коли VPN-тунель увімкнено, весь ваш інтернет-трафік проходитиме через офіс, швидкість вашого інтернету суттєво впаде. Після роботи одразу вимикайте тунель
+                        WireGuard.</li>
+                </ul>
+            </div>
         </div>
-      </div>
-      
-      <p style="margin-bottom: 0;">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard.</p>
-    </div></div>
-  </div>
 
-  <div class="step-block open" onclick="this.classList.toggle('open')">
-    <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 4</span><span class="heading-text step-title">Підключення та робота</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0;">Натисніть <b>Activate</b> у WireGuard в установленому конфігу.</p>
-      <p>Адреса сховища:</p>
-      <div class="code-row">
-        <button class="copy-mini" onclick="copyText('smb-link')">Скопіювати</button>
-        <code id="smb-link">smb://192.168.88.200</code>
-      </div>
-
-      <p style="margin-top: 24px;">У верхньому меню Finder виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або <code>Cmd + K</code>). Вставте адресу та виберіть том <b>home</b>.</p>
-      
-      <div style="margin-top: 32px; font-size: 13px; color: var(--text-muted);">
-        <p style="margin-bottom: 8px;">Панель керування сервером через браузер:</p>
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <button class="copy-mini" style="padding: 4px 12px; font-size: 12px;" onclick="copyText('web-panel')">Скопіювати</button>
-          <code id="web-panel" style="font-size: 13px;">http://192.168.88.200:8080</code>
+        <div class="step-block">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num">Крок 1</span><span
+                        class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для
+                        MacOS, Windows, iOS та Android.</p>
+                    <a href="https://www.wireguard.com/install/" target="_blank" class="btn btn-ip"
+                        style="margin-top: 8px;">Завантажити WireGuard</a>
+                </div>
+            </div>
         </div>
-        <p style="margin: 0;">Для авторизації потрібен <b>QNAP Authenticator</b>: 
-          <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345" target="_blank" class="app-link">iOS</a> / 
-          <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator" target="_blank" class="app-link">Android</a>.
-        </p>
-      </div>
-    </div></div>
-  </div>
 
-  <div class="step-block" onclick="this.classList.toggle('open')">
-    <div class="step-header">
-      <div class="step-header-left"><span class="step-num">Крок 5</span><span class="heading-text step-title">Завершення роботи</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        <div class="step-block open">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num">Крок 2</span><span
+                        class="heading-text step-title">Авторизація вашого IP</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <p style="margin-top: 0;">Задля безпеки даних, сервер не пропустить вас, якщо вашої адреси немає у білому списку.
+                        Прийдіть додому чи до постійного місця монтажу, підключіться до Wi-Fi чи по кабелю. Не використовуйте для підключення тимчасові місця перебування чи публічні Wi-Fi.</p>
+
+                    <div class="ip-row">
+                        <p style="margin-bottom: 12px; text-align: center;">Скопіюйте свій домашній/робочий IP:</p>
+                        <div class="ip-value" onclick="copyIp()" title="Копіювати IP">
+                            <span id="user-ip">...</span>
+                            <svg id="ip-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </div>
+                        <div class="ip-location">
+                            <span id="user-city">Перевірка...</span>
+                            <span>/</span>
+                            <span id="user-country"></span>
+                        </div>
+                    </div>
+
+                    <p style="margin-bottom: 0;">Надішліть цей IP адміністратору мережі та дочекайтесь від нього вашого особистого
+                        <code>.conf</code> файлу для WireGuard.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-block">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num">Крок 3</span><span
+                        class="heading-text step-title">Встановлення конфігурації WireGuard</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <ul style="margin-top: 0;">
+                        <li>Відкрийте програму WireGuard.</li>
+                        <li>Натисніть <b>Import tunnel(s) from file</b> (або <code>Cmd + O</code>).</li>
+                        <li>Виберіть отриманий <code>.conf</code> файл та встановіть його.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-block open">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num">Крок 4</span><span
+                        class="heading-text step-title">Підключення VPN-тунелю та робота з сервером</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <p style="margin-top: 0;">Увімкніть VPN (натисніть <b>Activate</b> у WireGuard).</p>
+
+                    <div style="margin-top: 24px;">
+                        <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-heading);">Для macOS (Finder):</div>
+                        <p style="margin-bottom: 16px;">Виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або <code>Cmd + K</code>).</p>
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 32px;">
+                            <div class="code-row" onclick="copySmb(this)" title="Копіювати">
+                                <code id="smb-link">smb://192.168.88.200</code>
+                                <svg id="smb-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Вставте адресу та виберіть папку <b>home</b>.</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px;">
+                        <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-heading);">Для Windows (Провідник):</div>
+                        <p style="margin-bottom: 16px;">Відкрийте <b>Цей ПК</b> ➔ <b>Підключити мережевий диск</b>.</p>
+                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+                            <div class="code-row" onclick="copyWin(this)" title="Копіювати">
+                                <code id="win-link">\\192.168.88.200\home</code>
+                                <svg id="win-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </div>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Вставте цей шлях у поле <b>Папка</b>.</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; font-size: 14px;">
+                        <p style="margin-bottom: 8px; color: var(--text-muted); display: flex; align-items: center; flex-wrap: wrap;">
+                            <span>Панель керування сервером через браузер:</span>
+                            <a href="http://192.168.88.200:8080" target="_blank" class="app-link" style="margin-left: 8px; font-family: monospace;">http://192.168.88.200:8080</a>
+                        </p>
+                        <p style="font-size: 14px; margin-top: 0; color: var(--text-muted);">
+                            Для авторизації встановіть <b>QNAP Authenticator</b>:
+                            <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345" target="_blank"
+                                class="app-link">iOS</a> або
+                            <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator"
+                                target="_blank" class="app-link">Android</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-block">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num">Крок 5</span><span
+                        class="heading-text step-title">Завершення роботи</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>),
+                        щоб не навантажувати офісну мережу та повернути повну швидкість вашого інтернету.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-block open" style="margin-bottom: 0;">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num"
+                        style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span><span
+                        class="heading-text step-title">Проблеми та їх вирішення</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <p style="margin-top: 0; margin-bottom: 12px;">Якщо з'єднання не відбувається, то, можливо:</p>
+                    <ul style="margin: 0;">
+                        <li>В офісі немає світла, та сервер вимкнуто – спробуйте підключитись пізніше, або запитайте когось з офісу чи ввімкнено сервер.</li>
+                        <li>У вашого чи офісного (Utels) провайдера проблеми з мережею – спробуйте підключитись пізніше, або дізнайтеся статус мережі в службі підтримки провайдера.</li>
+                        <li>Змінилася ваша IP-адреса (динамічний IP) або ви заходите з іншого місця перебування. Ще раз
+                            перевірте свою IP адресу на цьому сайті та впевніться, що вона збігається з тою ж, яку ви
+                            подавали у білий список IP – в разі зміни постійного місця перебування, подайте свою нову актуальну IP адресу.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin: 0;">Після роботи з матеріалами одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>), щоб повернути повну швидкість вашого інтернету.</p>
-    </div></div>
-  </div>
 
-  <div class="step-block open" onclick="this.classList.toggle('open')" style="margin-bottom: 0;">
-    <div class="step-header">
-      <div class="step-header-left"><span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span><span class="heading-text step-title">Проблеми</span></div>
-      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-    <div class="step-content-wrapper"><div class="step-content" onclick="event.stopPropagation();">
-      <p style="margin-top: 0; margin-bottom: 12px;">Якщо з'єднання не відбувається:</p>
-      <ul style="margin: 0;">
-        <li>В офісі немає світла або інтернету.</li>
-        <li>Змінилася ваша IP-адреса (динамічний IP) або ви заходите з іншого місця перебування. Ще раз перевірте свою IP адресу на цьому сайті та впевніться, що вона збігається з тою ж, яку ви подавали у білий список IP.</li>
-      </ul>
-    </div></div>
-  </div>
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Logic
+            const themeBtn = document.getElementById('theme-btn');
+            if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
+            
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-theme');
+                localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+            });
 
-<script>
-  const themeBtn = document.getElementById('theme-btn');
-  if (localStorage.getItem('theme') === 'light') document.body.classList.add('light-theme');
-  themeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('light-theme');
-    localStorage.setItem('theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
-  });
+            // Accordion Logic
+            const stepBlocks = document.querySelectorAll('.step-block');
+            stepBlocks.forEach(block => {
+                const header = block.querySelector('.step-header');
+                header.addEventListener('click', () => {
+                    block.classList.toggle('open');
+                });
+            });
 
-  async function getIpData() {
-    try {
-      const response = await fetch('https://ipinfo.io/json');
-      const data = await response.json();
-      document.getElementById('user-ip').innerText = data.ip;
-      document.getElementById('user-city').innerText = data.city || "Київ";
-      document.getElementById('user-country').innerText = data.country || "UA";
-    } catch (e) { document.getElementById('user-ip').innerText = "Помилка"; }
-  }
-  getIpData();
+            // IP Logic
+            getIpData();
+        });
 
-  function copyIp() {
-    const ip = document.getElementById('user-ip').innerText;
-    if(ip !== "...") {
-      navigator.clipboard.writeText(ip);
-      const btn = document.getElementById('copy-btn-ip');
-      btn.innerText = "Скопійовано!";
-      setTimeout(() => btn.innerText = "Скопіювати мій IP", 2000);
-    }
-  }
+        async function getIpData() {
+            try {
+                const response = await fetch('https://ipinfo.io/json');
+                const data = await response.json();
+                document.getElementById('user-ip').innerText = data.ip;
+                document.getElementById('user-city').innerText = data.city || "Локація невідома";
+                document.getElementById('user-country').innerText = data.country || "";
+            } catch (error) {
+                const ipEl = document.getElementById('user-ip');
+                if (ipEl) ipEl.innerText = "Помилка";
+                const cityEl = document.getElementById('user-city');
+                if (cityEl) cityEl.innerText = "Вимкніть VPN";
+            }
+        }
 
-  function copyText(id) {
-    const text = document.getElementById(id).innerText;
-    navigator.clipboard.writeText(text);
-    const btn = event.currentTarget;
-    const orig = btn.innerText;
-    btn.innerText = "Готово";
-    setTimeout(() => btn.innerText = orig, 2000);
-  }
-</script>
+        function copyIp() {
+            const ipEl = document.getElementById('user-ip');
+            if (!ipEl) return;
+            const ip = ipEl.innerText;
+            
+            if (ip && ip !== "..." && ip !== "Помилка") {
+                navigator.clipboard.writeText(ip);
+                swapIcon('ip-icon');
+            }
+        }
+
+        function copySmb(el) {
+            const text = document.getElementById('smb-link').innerText;
+            navigator.clipboard.writeText(text);
+            swapIcon('smb-icon');
+        }
+
+        function copyWin(el) {
+            const text = document.getElementById('win-link').innerText;
+            navigator.clipboard.writeText(text);
+            swapIcon('win-icon');
+        }
+
+        function swapIcon(id) {
+            const icon = document.getElementById(id);
+            if (icon) {
+                const parent = icon.closest('.ip-value, .code-row');
+                if (!icon.hasAttribute('data-orig')) {
+                    icon.setAttribute('data-orig', icon.innerHTML);
+                }
+                icon.innerHTML = '<polyline points="20 6 9 17 4 12"></polyline>';
+                
+                const origIconColor = icon.style.color;
+                icon.style.color = "var(--accent-blue)";
+                
+                let origBorderColor = "";
+                if (parent) {
+                    origBorderColor = parent.style.borderColor;
+                    parent.style.borderColor = "var(--accent-blue)";
+                }
+                
+                setTimeout(() => {
+                    icon.innerHTML = icon.getAttribute('data-orig');
+                    icon.style.color = origIconColor;
+                    if (parent) parent.style.borderColor = origBorderColor;
+                }, 2000);
+            }
+        }
+
+    </script>
 </body>
+
 </html>
