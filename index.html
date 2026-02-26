@@ -62,24 +62,14 @@
     
     .server-icon {
       height: 90px; width: auto; 
-      /* Інверсія та прозорість для чорної іконки на темному фоні */
       filter: invert(1) brightness(100) contrast(100) drop-shadow(0 8px 16px rgba(0,0,0,0.6));
       opacity: 0.9; 
     }
     
-    .server-name {
-      margin-top: 16px; font-family: "SF Mono", ui-monospace, monospace; 
-      font-size: 13px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px;
-    }
-
-    .critical-warning {
-      background: rgba(217, 130, 130, 0.08);
-      padding: 16px 20px; margin-top: 24px; border-radius: 16px; font-size: 14px; color: #d98282;
-    }
-
     .warning-callout {
       background: var(--warn-bg); color: var(--warn-text);
-      padding: 16px 20px; border-radius: 16px; font-size: 14px; line-height: 1.5;
+      padding: 20px 24px; border-radius: 16px; font-size: 14px; line-height: 1.6;
+      border: 1px solid var(--warn-border);
     }
 
     /* Стилі для згортання (Акордеон) */
@@ -136,10 +126,13 @@
     }
     .btn:hover { background: var(--bg-hover); border-color: #444; }
     
+    /* Оновлена кнопка: ховер стає прозорим з білою обводкою */
     .btn-primary { 
-      background: var(--text-heading); color: var(--bg-main); border: none; font-weight: 600;
+      background: var(--text-heading); color: var(--bg-main); border: 1px solid var(--text-heading); font-weight: 600;
     }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.1); }
+    .btn-primary:hover { 
+      background: transparent; color: var(--text-heading); 
+    }
 
     .action-hint {
       font-size: 14px; color: var(--warn-text); background: var(--warn-bg); 
@@ -163,12 +156,15 @@
     ul { padding-left: 20px; margin-top: 16px; color: var(--text-main); }
     li { margin-bottom: 10px; }
     b { color: var(--text-heading); font-weight: 600; }
+    
+    .app-link { color: var(--accent-text); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+    .app-link:hover { color: var(--text-heading); text-decoration: underline; }
 
     @media (max-width: 768px) {
       body { padding: 40px 15px; }
       .step-block, .callout { border-radius: 20px; }
       .callout-wrapper { flex-direction: column-reverse; gap: 24px; align-items: flex-start; }
-      .callout-server { align-self: center; margin-bottom: 16px; }
+      .callout-server { align-self: center; margin-bottom: 0; }
       .step-header { padding: 20px 24px; }
       .step-content { padding: 0 24px 24px 24px; }
       .code-row { flex-direction: column; align-items: flex-start; gap: 16px; }
@@ -189,18 +185,21 @@
   <div class="callout">
     <div class="callout-wrapper">
       <div class="callout-text">
-        <div class="heading-text" style="font-size: 22px; margin-bottom: 16px;">Інструкція по віддаленому користуванню офісним сервером</div>
-        <p style="margin-top: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби фізично сидите у студії. Це дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої рендери або забирати файли для локального монтажу.</p>
-        
-        <div class="critical-warning" style="margin-bottom: 0;">
-          <b>Важливо:</b> Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте дуже обережні.
-        </div>
+        <div class="heading-text" style="font-size: 20px; margin-bottom: 16px; line-height: 1.4;">Інструкція по віддаленому користуванню офісним сервером B13-QNAP-1688</div>
+        <p style="margin-top: 0; margin-bottom: 0;">Ви можете користуватись робочими файлами з нашого сервера на своєму домашньому Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. З увімкненим підключенням ви працюєте так, ніби знаходитесь в локальній мережі офісу, але з обмеженнями по швидкості інтернету та шифрування. Підключення дозволить вам переглядати матеріали прямо з сервера, завантажувати туди свої матеріали чи викачувати їх для локального монтажу.</p>
       </div>
       
       <div class="callout-server">
         <img src="https://static.myqnapcloud.com/device_model/TVS-h1688X_icon?r=1768199000" class="server-icon" alt="QNAP TVS-h1688X">
-        <span class="server-name">B13-QNAP-1688</span>
       </div>
+    </div>
+
+    <div class="warning-callout" style="margin-top: 32px;">
+      <b style="color: inherit; font-size: 15px;">Важливо:</b>
+      <ul style="margin-top: 8px; margin-bottom: 0; color: inherit;">
+        <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у Finder чи Провіднику, він назавжди видалиться з сервера для всієї команди. Будьте обережні.</li>
+        <li>Коли VPN увімкнено, увесь ваш трафік іде через офіс. Швидкість вашого інтернету падатиме в 2-3 рази за використання цього підключення. Після роботи одразу вимикайте тунель WireGuard.</li>
+      </ul>
     </div>
   </div>
 
@@ -296,7 +295,7 @@
           <p style="margin-top: 0;">Щоб змонтувати диск із матеріалами у Finder (для Mac):</p>
           <ul>
             <li>У верхньому меню Finder виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або натисніть <code>Cmd + K</code>).</li>
-            <li>Вставте адресу нижче та натисніть «Під'єднатися».</li>
+            <li>Вставте адресу нижче та натисніть «Під'єднатися». Після приєднання ви побачите наше основне сховище — <b>home</b>.</li>
           </ul>
           
           <div class="code-row">
@@ -309,6 +308,12 @@
             <code id="web-link">http://192.168.88.200:8080</code>
             <button class="copy-mini" onclick="copyText('web-link')">Скопіювати</button>
           </div>
+          
+          <p style="font-size: 14px; color: var(--text-muted); margin-top: 16px;">
+            Для авторизації в панелі керування потрібно встановити QNAP Authenticator: 
+            <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345?l=en-GB" target="_blank" class="app-link">iOS</a> або 
+            <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator&hl=zhTW&gl=US&pli=1" target="_blank" class="app-link">Android</a>.
+          </p>
         </div>
       </div>
     </div>
@@ -317,7 +322,7 @@
   <div class="step-block open" onclick="this.classList.toggle('open')">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">Крок 5</span>
+        <span class="step-num">Крок 5</span>
         <span class="heading-text step-title">Відключення</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -326,9 +331,7 @@
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
-          <div class="warning-callout" style="margin-top: 0;">
-            <b>Не забувайте вимикати:</b> Коли VPN увімкнено, увесь ваш трафік іде через офіс. Обов'язково вимикайте WireGuard (Deactivate), коли закінчили роботу з файлами. Швидкість вашого інтернету падатиме в 2-3 рази за використання цього підключення, тому вимкнення у ваших інтересах.
-          </div>
+          <p style="margin-top: 0; margin-bottom: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>).</p>
         </div>
       </div>
     </div>
@@ -337,7 +340,7 @@
   <div class="step-block open" onclick="this.classList.toggle('open')" style="margin-bottom: 0;">
     <div class="step-header">
       <div class="step-header-left">
-        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">Крок 6</span>
+        <span class="step-num" style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span>
         <span class="heading-text step-title">Можливі проблеми</span>
       </div>
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -346,7 +349,7 @@
     <div class="step-content-wrapper">
       <div class="step-content-inner">
         <div class="step-content" onclick="event.stopPropagation();">
-          <p style="margin-top: 0;">
+          <p style="margin-top: 0; margin-bottom: 0;">
             Якщо з'єднання немає, то або в офісі зараз відсутнє світло чи інтернет, або виникли проблеми з вашим домашнім провайдером. Перевірте з'єднання пізніше, і якщо нічого не виходить — напишіть Іллі.
           </p>
         </div>
