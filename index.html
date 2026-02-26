@@ -17,6 +17,7 @@
       
       --server-filter: invert(1) brightness(100) contrast(100) drop-shadow(0 12px 24px rgba(0,0,0,0.6));
       --open-bg: #1f1f1f; --block-border: transparent; --block-shadow: none;
+      --warn-border-width: 1px;
     }
 
     /* Світла тема: Матова, паперова естетика Claude */
@@ -32,9 +33,11 @@
       
       --accent-text: #2D6B66; --accent-bg: #E1EBEA; 
       
-      --warn-text: #6B5B32; 
-      --warn-bg: #EFE9D4; 
-      --warn-border: #E0D7B6; 
+      /* Блок Важливо: без жовтого фону, із чіткою жовто-золотою обводкою */
+      --warn-text: #8C6314; 
+      --warn-bg: transparent; 
+      --warn-border: #D97706; 
+      --warn-border-width: 2px; /* Робимо обводку трохи товщою, щоб компенсувати відсутність фону */
       
       --server-filter: drop-shadow(0 8px 16px rgba(0,0,0,0.06)); 
       --open-bg: #EFECE5; 
@@ -55,7 +58,6 @@
     
     .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; padding-left: 32px; }
     
-    /* Залізобетонна логіка логотипів зі страховкою від битих посилань */
     .logo-container img { 
       display: block; width: 180px; min-height: 40px; height: auto; opacity: 0.9; 
       object-fit: contain; font-size: 14px; color: var(--text-muted);
@@ -89,7 +91,7 @@
     .warning-callout {
       background: var(--warn-bg); color: var(--warn-text);
       padding: 20px 24px; border-radius: 16px; font-size: 14px; line-height: 1.6;
-      border: 1px solid var(--warn-border); transition: all 0.3s ease;
+      border: var(--warn-border-width) solid var(--warn-border); transition: all 0.3s ease;
     }
     .warning-callout code { background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
     body.light-theme .warning-callout code { background: rgba(0,0,0,0.05); }
@@ -114,13 +116,27 @@
     .step-num { background: var(--accent-bg); color: var(--accent-text); padding: 6px 14px; border-radius: 100px; font-size: 14px; font-weight: 600; margin-right: 16px; }
     .step-title { font-size: 18px; }
     
+    /* Новий дизайн блоку IP */
     .ip-row {
-      background: var(--bg-main); padding: 16px 20px; border-radius: 16px; margin: 16px 0; 
-      display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border); transition: all 0.3s ease;
+      background: var(--bg-main); padding: 12px; border-radius: 16px; margin: 16px 0; 
+      display: flex; align-items: center; justify-content: space-between; 
+      border: 1px solid var(--border); transition: all 0.3s ease;
     }
-    .ip-col { display: flex; flex-direction: column; }
-    #user-ip { font-family: monospace; font-size: 26px; color: var(--text-heading); font-weight: 600; line-height: 1.2; }
-    #user-details { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    
+    .ip-btn-wrapper { flex-shrink: 0; }
+    
+    .ip-value { 
+      font-family: monospace; font-size: 24px; color: var(--text-heading); font-weight: 600; 
+      border-left: 1px solid var(--border); border-right: 1px solid var(--border); 
+      padding: 0 24px; flex: 1; text-align: center;
+    }
+    
+    .ip-location {
+      display: flex; flex-direction: column; min-width: 140px; padding-left: 24px;
+      line-height: 1.4; text-align: left;
+    }
+    #user-city { font-size: 14px; font-weight: 600; color: var(--text-main); }
+    #user-country { font-size: 13px; color: var(--text-muted); }
     
     .btn { background: var(--bg-main); color: var(--text-heading); border: 1px solid var(--border); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s ease; font-size: 14px; }
     .btn:hover { background: var(--bg-hover); border-color: var(--text-muted); }
@@ -146,9 +162,15 @@
       .step-block, .callout { border-radius: 20px; }
       .callout-wrapper { flex-direction: column-reverse; gap: 24px; align-items: flex-start; }
       .step-header { padding: 20px 24px; } .step-content { padding: 0 24px 24px 24px; }
-      .code-row, .ip-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .code-row { flex-direction: column; align-items: flex-start; gap: 16px; }
       .copy-mini { margin-left: 0; width: 100%; justify-content: center; }
-      #user-ip { font-size: 24px; } .server-icon { height: 120px; }
+      .server-icon { height: 120px; }
+      
+      /* Адаптивність для нового блоку IP */
+      .ip-row { flex-direction: column; align-items: stretch; text-align: center; gap: 0; padding: 20px; }
+      .ip-btn-wrapper { width: 100%; display: flex; justify-content: center; margin-bottom: 16px; }
+      .ip-value { border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; margin-bottom: 16px; font-size: 28px; }
+      .ip-location { padding-left: 0; align-items: center; min-width: auto; }
     }
   </style>
 </head>
@@ -217,13 +239,18 @@
           <p style="margin-top: 0;">Сервер не пропустить вас, якщо вашої адреси немає у білому списку. <b>Прийдіть додому чи в те місце, з якого плануєте працювати з файлами, та підключіться до Wi-Fi чи кабелю.</b> Не використовуйте тимчасові місця перебування, публічні Wi-Fi тощо. Скопіюйте свій IP нижче:</p>
           
           <div class="ip-row">
-            <div class="ip-col">
-              <span id="user-ip">...</span>
-              <span id="user-details">перевірка локації...</span>
+            <div class="ip-btn-wrapper">
+              <button class="btn btn-primary" id="copy-btn-ip" onclick="copyIp()">
+                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Скопіювати мій IP
+              </button>
             </div>
-            <button class="copy-mini" style="padding: 12px 20px; font-size: 14px;" onclick="copyIp()">
-              <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Скопіювати
-            </button>
+            
+            <div class="ip-value" id="user-ip">...</div>
+            
+            <div class="ip-location">
+              <span id="user-city">Перевірка...</span>
+              <span id="user-country"></span>
+            </div>
           </div>
           
           <div class="action-hint">Надішліть цей IP Іллі та дочекайтесь від нього вашого особистого конфіг-файлу для WireGuard. Це буде ваш цифровий ключ до сервера.</div>
@@ -335,16 +362,19 @@
       const response = await fetch('https://ipinfo.io/json');
       const data = await response.json();
       document.getElementById('user-ip').innerText = data.ip;
-      document.getElementById('user-details').innerText = `${data.city || "Локація невідома"}, ${data.country || ""}`;
+      document.getElementById('user-city').innerText = data.city || "Локація невідома";
+      document.getElementById('user-country').innerText = data.country || "";
     } catch (error) {
       try {
         const fallbackRes = await fetch('https://api64.ipify.org?format=json');
         const fallbackData = await fallbackRes.json();
         document.getElementById('user-ip').innerText = fallbackData.ip;
-        document.getElementById('user-details').innerText = "Локацію приховано (працює антитрекер)";
+        document.getElementById('user-city').innerText = "Локацію приховано";
+        document.getElementById('user-country').innerText = "(працює антитрекер)";
       } catch (fallbackError) {
-        document.getElementById('user-ip').innerText = "Помилка мережі";
-        document.getElementById('user-details').innerText = "Вимкніть активний VPN або AdBlock";
+        document.getElementById('user-ip').innerText = "Помилка";
+        document.getElementById('user-city').innerText = "Вимкніть VPN";
+        document.getElementById('user-country').innerText = "або AdBlock";
       }
     }
   }
@@ -352,17 +382,17 @@
 
   function copyIp() {
     const ip = document.getElementById('user-ip').innerText;
-    if(ip && ip !== "..." && ip !== "Помилка мережі") {
+    if(ip && ip !== "..." && ip !== "Помилка") {
       navigator.clipboard.writeText(ip);
-      const btn = event.currentTarget;
+      const btn = document.getElementById('copy-btn-ip');
       const originalHTML = btn.innerHTML;
       btn.innerHTML = `СКОПІЙОВАНО!`;
       btn.style.color = "var(--text-heading)";
-      btn.style.background = "var(--bg-hover)";
+      btn.style.background = "transparent";
       setTimeout(() => { 
         btn.innerHTML = originalHTML; 
-        btn.style.color = "var(--text-muted)";
-        btn.style.background = "transparent";
+        btn.style.color = "";
+        btn.style.background = "";
       }, 2000);
     }
   }
