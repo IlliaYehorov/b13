@@ -1,73 +1,183 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>B13 | Access Manual</title>
+  <title>Babylon13 | VPN Setup Manual</title>
   <style>
-    :root { --accent: #00d1b2; --bg: #0f0f0f; --card: #1a1a1a; --text: #ffffff; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; justify-content: center; padding: 20px; }
-    .container { max-width: 450px; width: 100%; background: var(--card); padding: 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid #222; }
-    .logo { color: var(--accent); font-weight: 900; font-size: 24px; letter-spacing: -1px; margin-bottom: 30px; text-align: center; }
-    .ip-box { background: #000; padding: 25px; border-radius: 12px; text-align: center; margin: 20px 0; border: 1px dashed var(--accent); }
-    #user-ip { font-family: "SF Mono", monospace; font-size: 32px; color: var(--accent); display: block; }
-    .btn { background: var(--accent); color: #000; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; text-decoration: none; display: block; text-align: center; }
-    .btn-wa { background: #25D366; color: white; margin-top: 10px; }
-    .info-row { background: #222; padding: 12px; border-radius: 8px; margin-top: 15px; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-    code { color: var(--accent); }
+    :root { 
+      --accent: #00d1b2; 
+      --bg: #0a0a0a; 
+      --card: #141414; 
+      --text: #e0e0e0; 
+      --border: #2a2a2a;
+    }
+    body { 
+      background: var(--bg); color: var(--text); 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+      line-height: 1.6; padding: 20px; display: flex; justify-content: center; margin: 0;
+    }
+    .container { 
+      max-width: 600px; width: 100%; background: var(--card); 
+      padding: 40px; border-radius: 16px; border: 1px solid var(--border);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+    .logo { 
+      color: var(--accent); font-weight: 900; font-size: 28px; 
+      letter-spacing: 2px; text-align: center; margin-bottom: 10px; text-transform: uppercase;
+    }
+    .subtitle {
+      text-align: center; color: #888; font-size: 14px; margin-bottom: 40px;
+    }
+    .step { 
+      margin-bottom: 35px; padding-bottom: 25px; border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    
+    .step-title { 
+      color: var(--accent); font-size: 18px; font-weight: bold; margin-bottom: 15px; 
+      display: flex; align-items: center;
+    }
+    .step-num {
+      background: var(--accent); color: #000; width: 24px; height: 24px; 
+      display: inline-flex; justify-content: center; align-items: center; 
+      border-radius: 50%; margin-right: 10px; font-size: 14px;
+    }
+    
+    .ip-box { 
+      background: #000; padding: 20px; border-radius: 8px; text-align: center; 
+      border: 1px dashed var(--accent); margin: 15px 0;
+    }
+    #user-ip { font-family: "SF Mono", monospace; font-size: 28px; color: var(--accent); font-weight: bold;}
+    
+    .btn { 
+      background: #222; color: #fff; border: 1px solid #444; padding: 12px 20px; 
+      border-radius: 6px; font-weight: 600; cursor: pointer; text-decoration: none; 
+      display: inline-block; text-align: center; transition: 0.2s; font-size: 14px;
+    }
+    .btn:hover { background: #333; }
+    .btn-primary { background: var(--accent); color: #000; border: none; width: 100%; margin-top: 10px;}
+    .btn-primary:hover { background: #00b89c; }
+    .btn-wa { background: #25D366; color: #000; width: 100%; margin-top: 10px; border: none;}
+    .btn-wa:hover { background: #20b858; }
+
+    .code-row { 
+      background: #000; padding: 12px 15px; border-radius: 6px; margin-top: 10px; 
+      display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;
+    }
+    code { color: var(--accent); font-family: monospace; font-size: 15px; }
+    .copy-mini { 
+      background: #333; color: #fff; border: none; padding: 5px 10px; 
+      border-radius: 4px; font-size: 12px; cursor: pointer;
+    }
+    .copy-mini:hover { background: #444; }
+    
+    ul { padding-left: 20px; color: #ccc; font-size: 15px; }
+    li { margin-bottom: 8px; }
+    b { color: #fff; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="logo">BABYLON13 / ACCESS</div>
-  
-  <p style="text-align:center; font-size: 14px; color: #888;">Твій поточний IP для доступу:</p>
-  
-  <div class="ip-box">
-    <span id="user-ip">...визначаємо...</span>
+  <div class="logo">BABYLON13</div>
+  <div class="subtitle">Інструкція з безпечного доступу до сервера</div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">1</span> Встановіть клієнт WireGuard</div>
+    <p style="font-size: 15px; color: #ccc;">Це програма, яка створить захищений тунель між вашим комп'ютером та нашим сервером. Вона працює у фоні і не гальмує систему.</p>
+    <a href="https://www.wireguard.com/install/" target="_blank" class="btn">Завантажити WireGuard (Офіційний сайт)</a>
   </div>
 
-  <button class="btn" onclick="copyIp()">СКОПІЮВАТИ IP</button>
-  
-  <a id="wa-link" href="#" target="_blank" class="btn btn-wa">ВІДПРАВИТИ АДМІНУ (WHATSAPP)</a>
-
-  <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
-    <p style="font-size: 12px; color: #666; text-transform: uppercase; font-weight: bold;">Дані сервера:</p>
-    <div class="info-row">
-      <span>Finder (SMB):</span>
-      <code onclick="copyText('smb://192.168.88.200')">smb://192.168.88.200</code>
+  <div class="step">
+    <div class="step-title"><span class="step-num">2</span> Авторизуйте свою мережу</div>
+    <p style="font-size: 15px; color: #ccc;">Наш сервер закритий для всього інтернету. Щоб система вас пропустила, відправте адміну свою поточну IP-адресу. Це потрібно робити, якщо ви змінили локацію (наприклад, переїхали з дому в кафе).</p>
+    
+    <div class="ip-box">
+      <span id="user-ip">визначаємо...</span>
     </div>
-    <div class="info-row">
-      <span>Admin Panel:</span>
-      <code onclick="copyText('http://192.168.88.200:8080')">:8080</code>
+
+    <button class="btn btn-primary" onclick="copyIp()">СКОПІЮВАТИ IP</button>
+    <a id="wa-link" href="#" target="_blank" class="btn btn-wa">ВІДПРАВИТИ АДМІНУ (WHATSAPP)</a>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">3</span> Налаштуйте з'єднання</div>
+    <p style="font-size: 15px; color: #ccc;">Адмін перевірить ваш IP і надішле вам особистий файл конфігурації (наприклад, <code>ім'я.conf</code>). Це ваш персональний цифровий ключ.</p>
+    <ul>
+      <li>Відкрийте програму WireGuard.</li>
+      <li>Натисніть <b>Import tunnel(s) from file</b> (або `Cmd + O` на Mac).</li>
+      <li>Виберіть файл <code>.conf</code>, який вам надіслали.</li>
+      <li>Натисніть кнопку <b>Activate</b>. Статус має змінитися на зелений (Active).</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <div class="step-title"><span class="step-num">4</span> Підключіться до робочих папок</div>
+    <p style="font-size: 15px; color: #ccc;">Тепер ви у внутрішній мережі студії. Щоб змонтувати диск із матеріалами (для користувачів Mac):</p>
+    <ul>
+      <li>Перейдіть у <b>Finder</b>.</li>
+      <li>Натисніть комбінацію <b>Cmd + K</b> (Підключитися до сервера).</li>
+      <li>Вставте адресу нижче та натисніть "Підключитися":</li>
+    </ul>
+    
+    <div class="code-row">
+      <code id="smb-link">smb://192.168.88.200</code>
+      <button class="copy-mini" onclick="copyText('smb-link')">Copy</button>
+    </div>
+
+    <p style="font-size: 15px; color: #ccc; margin-top: 20px;">Для входу в панель керування сервером (через браузер):</p>
+    <div class="code-row">
+      <code id="web-link">http://192.168.88.200:8080</code>
+      <button class="copy-mini" onclick="copyText('web-link')">Copy</button>
     </div>
   </div>
+
 </div>
 
 <script>
-  const adminPhone = "380XXXXXXXXX"; // ВПИШІТЬ ВАШ НОМЕР
+  // ВПИШІТЬ ВАШ НОМЕР ТУТ (у форматі 380...)
+  const adminPhone = "380XXXXXXXXX"; 
 
+  // Отримання IP
   fetch('https://api64.ipify.org?format=json')
     .then(res => res.json())
     .then(data => {
       const ip = data.ip;
       document.getElementById('user-ip').innerText = ip;
       
-      // Формуємо лінк для WhatsApp
-      const message = encodeURIComponent("Привіт! Додай мій IP у TRUSTED-WANS: " + ip);
+      // Формуємо лінк WhatsApp
+      const message = encodeURIComponent("Привіт! Я підключаюся до сервера. Мій поточний IP: " + ip);
       document.getElementById('wa-link').href = `https://wa.me/${adminPhone}?text=${message}`;
+    })
+    .catch(err => {
+      document.getElementById('user-ip').innerText = "Помилка мережі";
+      document.getElementById('user-ip').style.fontSize = "18px";
     });
 
   function copyIp() {
     const ip = document.getElementById('user-ip').innerText;
-    navigator.clipboard.writeText(ip);
-    alert("IP скопійовано!");
+    if(ip && ip !== "визначаємо..." && ip !== "Помилка мережі") {
+      navigator.clipboard.writeText(ip);
+      alert("Ваш IP (" + ip + ") скопійовано! Надішліть його адміну.");
+    }
   }
 
-  function copyText(text) {
+  function copyText(id) {
+    const text = document.getElementById(id).innerText;
     navigator.clipboard.writeText(text);
-    alert("Скопійовано: " + text);
+    
+    // Візуальний фідбек на кнопці
+    const btn = event.target;
+    const originalText = btn.innerText;
+    btn.innerText = "Done!";
+    btn.style.background = "#00d1b2";
+    btn.style.color = "#000";
+    setTimeout(() => { 
+      btn.innerText = originalText; 
+      btn.style.background = "#333";
+      btn.style.color = "#fff";
+    }, 2000);
   }
 </script>
 
