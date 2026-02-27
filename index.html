@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Інструкція з налаштування віддаленого доступу до сервера Babylon13 через VPN WireGuard.">
     <title>Babylon13 | Доступ до сервера</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/wp-content/uploads/b13-icon-transparent-dark.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/wp-content/uploads/b13-icon-transparent-light.png" media="(prefers-color-scheme: light)">
     <style>
         :root {
             /* Темна тема */
@@ -437,6 +440,35 @@
             border-bottom-color: var(--accent-text);
         }
 
+        /* Utility Classes */
+        .m-0 { margin: 0; }
+        .mb-0 { margin-bottom: 0; }
+        .mb-xs { margin-bottom: 8px; }
+        .mb-sm { margin-bottom: 12px; }
+        .mb-md { margin-bottom: 16px; }
+        .mb-lg { margin-bottom: 24px; }
+        .mb-xl { margin-bottom: 32px; }
+        
+        .mt-0 { margin-top: 0; }
+        .mt-xs { margin-top: 8px; }
+        .mt-sm { margin-top: 12px; }
+        .mt-md { margin-top: 16px; }
+        .mt-lg { margin-top: 24px; }
+        .mt-xl { margin-top: 32px; }
+        
+        .text-center { text-align: center; }
+        .text-heading { color: var(--text-heading); }
+        .text-muted { color: var(--text-muted); }
+        .font-weight-600 { font-weight: 600; }
+        .font-size-20 { font-size: 20px; }
+        .font-size-13 { font-size: 13px; }
+        .font-size-14 { font-size: 14px; }
+        
+        .flex-col-center { display: flex; flex-direction: column; align-items: center; }
+        .badge-warn { background: var(--warn-bg); color: var(--warn-text); }
+        .w-20 { width: 20px; height: 20px; }
+        .flex-shrink-0 { flex-shrink: 0; }
+
         @media (max-width: 768px) {
             body {
                 padding: 40px 15px;
@@ -472,6 +504,11 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .ip-value, .code-row {
+                font-size: 18px;
+                padding: 6px 16px;
+            }
         }
     </style>
 </head>
@@ -490,8 +527,7 @@
                 </a>
             </div>
             <button class="theme-toggle" id="theme-btn">
-                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    style="width: 20px; height: 20px;">
+                <svg class="icon-sun w-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -502,8 +538,7 @@
                     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
-                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    style="width: 20px; height: 20px;">
+                <svg class="icon-moon w-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button>
@@ -512,9 +547,9 @@
         <div class="callout">
             <div class="callout-wrapper">
                 <div class="callout-text">
-                    <div class="heading-text" style="font-size: 20px; margin-bottom: 16px;">Інструкція по користуванню
+                    <div class="heading-text font-size-20 mb-md">Інструкція по користуванню
                         офісним сервером B13-QNAP-1688</div>
-                    <p style="margin: 0;">Ви можете користуватись робочими файлами з офісного сервера на своєму домашньому
+                    <p class="m-0">Ви можете користуватись робочими файлами з офісного сервера на своєму домашньому
                         Mac чи PC. Для цього ми використовуємо захищений VPN-вузол. Підключення дозволить вам
                         переглядати, викачувати чи завантажувати свої матеріали напряму на сервер. Монтувати напряму з
                         файлів на сервері не вийде через обмежену швидкість інтернету.</p>
@@ -525,23 +560,29 @@
                 </div>
             </div>
 
-            <div class="warning-callout" style="margin-top: 32px;">
+            <div class="warning-callout mt-xl">
                 <b>Важливо:</b>
-                <ul style="margin-top: 8px; margin-bottom: 0;">
+                <ul class="mt-xs mb-0">
                     <li>Файли, які ви бачите у папках сервера — це єдині оригінали. Якщо ви видалите файл у себе у
-                        Finder чи Провіднику, він назавжди видалиться з сервера для всіх.</li>
-                    <li>Розміщуйте свої проекти не в кореневій папці диску, а в папках відповідного року.
+                        Finder чи Провіднику, він назавжди видалиться з сервера для всіх. Будьте уважні.</li>
+                    <li>Розміщуйте свої проекти не в кореневій папці диску, а в папках відповідного року. 
+                        Для довготривалих проектів використовуйте рік початку проекту.
+
                     </li>
                     <li>Називайте папки своїх проектів та матеріалів у форматі
                         <code>РРРР-ММ-ДД_Назва-проекту_Автор</code>, наприклад
                         <code>1979-05-19_Apocalypse-Now_F-Coppola</code>.</li>
-                    <li>Коли VPN-тунель увімкнено, весь ваш інтернет-трафік проходитиме через офіс, швидкість вашого інтернету суттєво впаде. Після роботи одразу вимикайте тунель
+                    <li>Бережіть простір на диску, який стрімко закінчується та дорого коштує. 
+                        Видаляйте тимчасові рендери та копії, наводьте порядок в папках та назвах після релізу проекту. 
+                        Це дуже допоможе зекономити місце для нових матеріалів.</li>
+                    <li>Коли VPN-тунель увімкнено, весь ваш інтернет-трафік проходитиме через офіс, 
+                        швидкість вашого інтернету суттєво впаде. Після роботи одразу вимикайте тунель
                         WireGuard.</li>
                 </ul>
             </div>
         </div>
 
-        <div class="step-block">
+        <div class="step-block open">
             <div class="step-header">
                 <div class="step-header-left"><span class="step-num">Крок 1</span><span
                         class="heading-text step-title">Встановлення VPN клієнта WireGuard</span></div>
@@ -551,10 +592,9 @@
             </div>
             <div class="step-content-wrapper">
                 <div class="step-content">
-                    <p style="margin-top: 0;">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для
+                    <p class="mt-0">Завантажте та встановіть офіційну програму WireGuard. Вона доступна для
                         MacOS, Windows, iOS та Android.</p>
-                    <a href="https://www.wireguard.com/install/" target="_blank" class="btn btn-ip"
-                        style="margin-top: 8px;">Завантажити WireGuard</a>
+                    <a href="https://www.wireguard.com/install/" target="_blank" class="btn btn-ip mt-xs">Завантажити WireGuard</a>
                 </div>
             </div>
         </div>
@@ -569,14 +609,14 @@
             </div>
             <div class="step-content-wrapper">
                 <div class="step-content">
-                    <p style="margin-top: 0;">Задля безпеки даних, сервер не пропустить вас, якщо вашої адреси немає у білому списку.
+                    <p class="mt-0">Задля безпеки даних, сервер не пропустить вас, якщо вашої адреси немає у білому списку.
                         Прийдіть додому чи до постійного місця монтажу, підключіться до Wi-Fi чи по кабелю. Не використовуйте для підключення тимчасові місця перебування чи публічні Wi-Fi.</p>
 
                     <div class="ip-row">
-                        <p style="margin-bottom: 12px; text-align: center;">Скопіюйте свій домашній/робочий IP:</p>
+                        <p class="mb-sm text-center">Скопіюйте свій домашній/робочий IP:</p>
                         <div class="ip-value" onclick="copyIp()" title="Копіювати IP">
                             <span id="user-ip">...</span>
-                            <svg id="ip-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <svg id="ip-icon" class="w-20 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </div>
                         <div class="ip-location">
                             <span id="user-city">Перевірка...</span>
@@ -585,13 +625,13 @@
                         </div>
                     </div>
 
-                    <p style="margin-bottom: 0;">Надішліть цей IP адміністратору мережі та дочекайтесь від нього вашого особистого
+                    <p class="mb-0">Надішліть цей IP адміністратору мережі та дочекайтесь від нього вашого особистого
                         <code>.conf</code> файлу для WireGuard.</p>
                 </div>
             </div>
         </div>
 
-        <div class="step-block">
+        <div class="step-block open">
             <div class="step-header">
                 <div class="step-header-left"><span class="step-num">Крок 3</span><span
                         class="heading-text step-title">Встановлення конфігурації WireGuard</span></div>
@@ -601,7 +641,7 @@
             </div>
             <div class="step-content-wrapper">
                 <div class="step-content">
-                    <ul style="margin-top: 0;">
+                    <ul class="mt-0">
                         <li>Відкрийте програму WireGuard.</li>
                         <li>Натисніть <b>Import tunnel(s) from file</b> (або <code>Cmd + O</code>).</li>
                         <li>Виберіть отриманий <code>.conf</code> файл та встановіть його.</li>
@@ -613,61 +653,45 @@
         <div class="step-block open">
             <div class="step-header">
                 <div class="step-header-left"><span class="step-num">Крок 4</span><span
-                        class="heading-text step-title">Підключення VPN-тунелю та робота з сервером</span></div>
+                        class="heading-text step-title">Підключення VPN та робота з сервером</span></div>
                 <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
             <div class="step-content-wrapper">
                 <div class="step-content">
-                    <p style="margin-top: 0;">Увімкніть VPN (натисніть <b>Activate</b> у WireGuard).</p>
+                    <p class="mt-0">Увімкніть VPN (натисніть <b>Activate</b> у WireGuard).</p>
 
-                    <div style="margin-top: 24px;">
-                        <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-heading);">Для macOS (Finder):</div>
-                        <p style="margin-bottom: 16px;">Виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або <code>Cmd + K</code>).</p>
-                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 32px;">
+                    <div class="mt-lg">
+                        <div class="font-weight-600 mb-xs text-heading">Для macOS (Finder):</div>
+                        <p class="mb-md">Виберіть: <b>Перейти ➔ Під'єднатися до сервера...</b> (або <code>Cmd + K</code>).</p>
+                        <div class="flex-col-center mb-xl">
                             <div class="code-row" onclick="copySmb(this)" title="Копіювати">
                                 <code id="smb-link">smb://192.168.88.200</code>
-                                <svg id="smb-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <svg id="smb-icon" class="w-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                             </div>
-                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Вставте адресу та виберіть папку <b>home</b>.</p>
+                            <p class="font-size-13 text-muted mt-xs">Вставте адресу та виберіть папку <b>home</b>.</p>
                         </div>
                     </div>
 
-                    <div style="margin-top: 24px;">
-                        <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-heading);">Для Windows (Провідник):</div>
-                        <p style="margin-bottom: 16px;">Відкрийте <b>Цей ПК</b> ➔ <b>Підключити мережевий диск</b>.</p>
-                        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+                    <div class="mt-lg">
+                        <div class="font-weight-600 mb-xs text-heading">Для Windows (Провідник):</div>
+                        <p class="mb-md">Відкрийте <b>Цей ПК</b> ➔ <b>Підключити мережевий диск</b>.</p>
+                        <div class="flex-col-center mb-lg">
                             <div class="code-row" onclick="copyWin(this)" title="Копіювати">
                                 <code id="win-link">\\192.168.88.200\home</code>
-                                <svg id="win-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                <svg id="win-icon" class="w-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                             </div>
-                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 8px;">Вставте цей шлях у поле <b>Папка</b>.</p>
+                            <p class="font-size-13 text-muted mt-xs">Вставте цей шлях у поле <b>Папка</b>.</p>
                         </div>
+                        <p class="mt-0">Після приєднання мережевої папки можна починати роботу з матеріалами.</p>
                     </div>
 
-                    <div style="margin-top: 40px; font-size: 14px;">
-                        <p style="margin-bottom: 8px; color: var(--text-muted); display: flex; align-items: center; flex-wrap: wrap;">
-                            <span>Панель керування сервером через браузер:</span>
-                            <a href="http://192.168.88.200:8080" target="_blank" class="app-link" style="margin-left: 8px; font-family: monospace;">http://192.168.88.200:8080</a>
-                        </p>
-                        <p style="font-size: 14px; margin-top: 0; color: var(--text-muted);">
-                            Для авторизації встановіть <b>QNAP Authenticator</b>:
-                            <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345" target="_blank"
-                                class="app-link">iOS</a> або
-                            <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator"
-                                target="_blank" class="app-link">Android</a>.
-                        </p>
-                                                <p style="margin-bottom: 8px; color: var(--text-muted); display: flex; align-items: center; flex-wrap: wrap;">
-                            <span>Додавання нових <b>TRUSTED-WANS</b> у роутер:</span>
-                            <a href="http://192.168.88.1/webfig/#IP:Firewall.Address_Lists" target="_blank" class="app-link" style="margin-left: 8px; font-family: monospace;">http://192.168.88.1/webfig/#IP:Firewall.Address_Lists</a>
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="step-block">
+        <div class="step-block open">
             <div class="step-header">
                 <div class="step-header-left"><span class="step-num">Крок 5</span><span
                         class="heading-text step-title">Завершення роботи</span></div>
@@ -677,16 +701,15 @@
             </div>
             <div class="step-content-wrapper">
                 <div class="step-content">
-                    <p style="margin: 0;">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>),
+                    <p class="m-0">Після роботи одразу вимкніть тунель WireGuard (натисніть <b>Deactivate</b>),
                         щоб не навантажувати офісну мережу та повернути повну швидкість вашого інтернету.</p>
                 </div>
             </div>
         </div>
 
-        <div class="step-block open" style="margin-bottom: 0;">
+        <div class="step-block">
             <div class="step-header">
-                <div class="step-header-left"><span class="step-num"
-                        style="background: var(--warn-bg); color: var(--warn-text);">FAQ</span><span
+                <div class="step-header-left"><span class="step-num badge-warn">FAQ</span><span
                         class="heading-text step-title">Проблеми та їх вирішення</span></div>
                 <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
@@ -694,14 +717,43 @@
             </div>
             <div class="step-content-wrapper">
                 <div class="step-content">
-                    <p style="margin-top: 0; margin-bottom: 12px;">Якщо з'єднання не відбувається, то, можливо:</p>
-                    <ul style="margin: 0;">
+                    <p class="mt-0 mb-sm">Якщо з'єднання не відбувається, то, можливо:</p>
+                    <ul class="m-0">
                         <li>В офісі немає світла, та сервер вимкнуто – спробуйте підключитись пізніше, або запитайте когось з офісу чи ввімкнено сервер.</li>
                         <li>У вашого чи офісного (Utels) провайдера проблеми з мережею – спробуйте підключитись пізніше, або дізнайтеся статус мережі в службі підтримки провайдера.</li>
                         <li>Змінилася ваша IP-адреса (динамічний IP) або ви заходите з іншого місця перебування. Ще раз
                             перевірте свою IP адресу на цьому сайті та впевніться, що вона збігається з тою ж, яку ви
                             подавали у білий список IP – в разі зміни постійного місця перебування, подайте свою нову актуальну IP адресу.</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-block mb-0">
+            <div class="step-header">
+                <div class="step-header-left"><span class="step-num badge-warn">ADMIN</span><span
+                        class="heading-text step-title">Сервісний режим</span></div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="step-content-wrapper">
+                <div class="step-content">
+                    <div>
+                        <p class="mb-xs">
+                            Панель керування сервером через браузер: <a href="http://192.168.88.200:8080" target="_blank" class="app-link">http://192.168.88.200:8080</a>
+                        </p>
+                        <p class="mt-0">
+                            Для авторизації встановіть <b>QNAP Authenticator</b>:
+                            <a href="https://apps.apple.com/tw/app/qnap-authenticator/id1620302345" target="_blank"
+                                class="app-link">iOS</a> або
+                            <a href="https://play.google.com/store/apps/details?id=com.qnap.qnapauthenticator"
+                                target="_blank" class="app-link">Android</a>.
+                        </p>
+                        <p class="mb-xs">
+                            Додавання нових <b>TRUSTED-WANS</b> у роутер: <a href="http://192.168.88.1/webfig/#IP:Firewall.Address_Lists" target="_blank" class="app-link">http://192.168.88.1/webfig/#IP:Firewall.Address_Lists</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -722,8 +774,12 @@
             const stepBlocks = document.querySelectorAll('.step-block');
             stepBlocks.forEach(block => {
                 const header = block.querySelector('.step-header');
+                const isOpen = block.classList.contains('open');
+                header.setAttribute('aria-expanded', isOpen);
+                
                 header.addEventListener('click', () => {
                     block.classList.toggle('open');
+                    header.setAttribute('aria-expanded', block.classList.contains('open'));
                 });
             });
 
